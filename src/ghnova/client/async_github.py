@@ -22,6 +22,14 @@ class AsyncGitHub(Client):  # pylint: disable=too-few-public-methods
         super().__init__(token=token, base_url=base_url)
         self.session: ClientSession | None = None
 
+    def __str__(self) -> str:
+        """Return a string representation of the AsyncGitHub client.
+
+        Returns:
+            str: String representation.
+        """
+        return f"<AsyncGitHub base_url={self.base_url}>"
+
     async def __aenter__(self) -> AsyncGitHub:
         """Enter the asynchronous context manager.
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from requests import Response
 
@@ -162,3 +162,54 @@ class User(BaseUser, Resource):
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
 
         return data, status_code, etag_value, last_modified_value
+
+    def _list_users(
+        self,
+        since: int | None = None,
+        per_page: int | None = None,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
+    ) -> Response:
+        """List all users.
+
+        Args:
+            since: The integer ID of the last User that you've seen.
+            per_page: The number of results per page (max 100).
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - A list of user dictionaries.
+                - The HTTP status code.
+        """
+        endpoint, params, kwargs = self._list_users_helper(since=since, per_page=per_page, **kwargs)
+        return self._get(endpoint=endpoint, params=params, etag=etag, last_modified=last_modified, **kwargs)
+
+    def list_users(
+        self,
+        since: int | None = None,
+        per_page: int | None = None,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
+        """List all users.
+
+        Args:
+            since: The integer ID of the last User that you've seen.
+            per_page: The number of results per page (max 100).
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - A list of user dictionaries (empty if 304 Not Modified).
+                - The HTTP status code.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified timestamp from the response headers (if present).
+        """
+        response = self._list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs)
+        data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value

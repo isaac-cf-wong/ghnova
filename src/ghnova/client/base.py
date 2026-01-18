@@ -67,7 +67,7 @@ class Client:
         """
         headers: dict[str, str] = {}
         if etag:
-            headers["if-none-match"] = etag
+            headers["If-None-Match"] = etag
         if last_modified:
-            headers["if-modified-since"] = last_modified
+            headers["If-Modified-Since"] = last_modified
         return headers

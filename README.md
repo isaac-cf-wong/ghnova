@@ -115,6 +115,14 @@ ghnova --help
 python -c "import ghnova; print(ghnova.__version__)"
 ```
 
+## Release Schedule
+
+Releases follow a fixed schedule: every Tuesday at 00:00 UTC,
+unless an emergent bugfix is required.
+This ensures predictable updates while allowing flexibility for critical issues.
+Users can view upcoming changes in the draft release on the
+[GitHub Releases page](https://github.com/isaac-cf-wong/ghnova/releases).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

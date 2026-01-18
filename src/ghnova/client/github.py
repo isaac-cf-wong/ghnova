@@ -23,6 +23,14 @@ class GitHub(Client):
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
 
+    def __str__(self) -> str:
+        """Return a string representation of the GitHub client.
+
+        Returns:
+            str: String representation.
+        """
+        return f"<GitHub base_url={self.base_url}>"
+
     def __enter__(self) -> GitHub:
         """Enter the context manager.
 

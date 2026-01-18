@@ -73,7 +73,12 @@ nav:
       - Modules:
           - ghnova:
               - Overview: reference/ghnova/index.md
-              - version: reference/ghnova/version.md
+              - Client:
+                  - Overview: reference/ghnova/client/index.md
+                  - Base Client: reference/ghnova/client/base.md
+                  - GitHub: reference/ghnova/client/github.md
+                  - AsyncGitHub: reference/ghnova/client/async_github.md
+              - Version: reference/ghnova/version.md
               - Utils:
                   - Overview: reference/ghnova/utils/index.md
                   - Logging: reference/ghnova/utils/log.md

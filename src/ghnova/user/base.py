@@ -50,3 +50,11 @@ class BaseUser:
         kwargs["headers"] = headers
 
         return endpoint, kwargs
+
+    def _update_user_endpoint(self) -> str:
+        """Get the endpoint for updating the authenticated user.
+
+        Returns:
+            The API endpoint for updating the authenticated user.
+        """
+        return "/user"

@@ -67,7 +67,7 @@ class BaseUser:
         twitter_username: str | None,
         company: str | None,
         location: str | None,
-        hireable: str | None,
+        hireable: bool | None,
         bio: str | None,
         **kwargs: Any,
     ) -> tuple[str, dict[str, str], dict[str, Any]]:

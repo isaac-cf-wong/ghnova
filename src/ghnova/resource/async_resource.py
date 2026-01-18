@@ -67,3 +67,15 @@ class AsyncResource:
             The JSON response as a dictionary.
         """
         return await self.client._request(method="DELETE", endpoint=endpoint, **kwargs)
+
+    async def _patch(self, endpoint: str, **kwargs: Any) -> ClientResponse:
+        """Helper method to perform a PATCH request.
+
+        Args:
+            endpoint: The API endpoint.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The JSON response as a dictionary.
+        """
+        return await self.client._request(method="PATCH", endpoint=endpoint, **kwargs)

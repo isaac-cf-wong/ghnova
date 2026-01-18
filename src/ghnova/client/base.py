@@ -22,6 +22,14 @@ class Client:
         if self.token:
             self.headers["Authorization"] = f"Bearer {self.token}"
 
+    def __str__(self) -> str:
+        """Return a string representation of the client.
+
+        Returns:
+            str: String representation.
+        """
+        return f"<Client base_url={self.base_url}>"
+
     @property
     def api_url(self) -> str:
         """Return the base API URL.

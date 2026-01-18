@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from python_package_template.version import __version__
+from ghnova.version import __version__
 
 
 def get_version_information() -> str:
@@ -37,7 +37,7 @@ def setup_logger(
     else:
         level = int(log_level)
 
-    logger = logging.getLogger("python_package_template")
+    logger = logging.getLogger("ghnova")
     logger.propagate = False
     logger.setLevel(level)
 
@@ -66,4 +66,4 @@ def setup_logger(
 
     if print_version:
         version = get_version_information()
-        logger.info("Running python_package_template version: %s", version)
+        logger.info("Running ghnova version: %s", version)

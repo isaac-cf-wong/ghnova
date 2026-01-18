@@ -65,7 +65,7 @@ pip install your-package[dev,docs]
 --8<-- "pyproject.toml:55:56"
 ```
 
-Defines command-line scripts. This creates the `python_package_template` command.
+Defines command-line scripts. This creates the `ghnova` command.
 
 ### URLs
 

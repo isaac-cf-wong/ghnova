@@ -30,10 +30,10 @@ authors = [{ name = "Your Name", email = "your.email@example.com" }]
 
 ```bash
 # Rename the source directory
-mv src/python_package_template src/your_package_name
+mv src/ghnova src/your_package_name
 
 # Update all imports in your code
-find src -name "*.py" -exec sed -i 's/python_package_template/your_package_name/g' {} \;
+find src -name "*.py" -exec sed -i 's/ghnova/your_package_name/g' {} \;
 ```
 
 ### 3. Update Entry Points

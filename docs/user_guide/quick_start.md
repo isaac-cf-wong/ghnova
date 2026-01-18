@@ -20,7 +20,7 @@ This template includes:
 
 ### 1. Create a New Repository
 
-1. Go to [GitHub](https://github.com/isaac-cf-wong/python-package-template)
+1. Go to [GitHub](https://github.com/isaac-cf-wong/ghnova)
 2. Click **"Use this template"** to create your own repository
 3. Clone your new repository:
 
@@ -133,10 +133,10 @@ Try the included example:
 
 ```bash
 # Run as a module
-python -m python_package_template
+python -m ghnova
 
 # Or use the CLI (if configured)
-python_package_template --help
+ghnova --help
 ```
 
 ### Building and Publishing

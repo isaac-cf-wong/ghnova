@@ -85,7 +85,7 @@ The template includes:
 Before the first release, update `cliff.toml` with your repository information:
 
 1. Open `cliff.toml`
-2. Replace `https://github.com/isaac-cf-wong/python-package-template` (line 61)
+2. Replace `https://github.com/isaac-cf-wong/ghnova` (line 61)
    with your actual GitHub repository (e.g., `octocat/hello-world`)
 3. Commit and push this change
 

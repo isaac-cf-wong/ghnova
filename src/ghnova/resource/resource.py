@@ -68,3 +68,15 @@ class Resource:
             The response object.
         """
         return self.client._request(method="DELETE", endpoint=endpoint, **kwargs)
+
+    def _patch(self, endpoint: str, **kwargs: Any) -> Response:
+        """Helper method to perform a PATCH request.
+
+        Args:
+            endpoint: The API endpoint.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The response object.
+        """
+        return self.client._request(method="PATCH", endpoint=endpoint, **kwargs)

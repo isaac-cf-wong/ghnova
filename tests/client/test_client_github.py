@@ -60,13 +60,13 @@ class TestGitHub:
 
         client = GitHub(token="test_token", base_url="https://github.com")
         with client:
-            response = client._request("GET", "repos/octocat/Hello-World")
+            response = client._request("GET", "repos/octocat/Hello-World", etag="test-etag")
 
         assert response == mock_response
         mock_session.request.assert_called_once_with(
             "GET",
             "https://api.github.com/repos/octocat/Hello-World",
-            headers={"Authorization": "Bearer test_token"},
+            headers={"Authorization": "Bearer test_token", "If-None-Match": "test-etag"},
             timeout=30,
         )
 

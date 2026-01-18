@@ -58,3 +58,17 @@ class TestClient:
         client = Client(token=None, base_url="https://custom.github.com")
         url = client._build_url("repos/octocat/Hello-World")
         assert url == "https://custom.github.com/api/v3/repos/octocat/Hello-World"
+
+    def test_get_conditional_request_headers(self):
+        """Test _get_conditional_request_headers method."""
+        client = Client(token=None, base_url="https://github.com")
+        headers = client._get_conditional_request_headers(
+            etag="test-etag", last_modified="Wed, 21 Oct 2015 07:28:00 GMT"
+        )
+        assert headers == {"If-None-Match": "test-etag", "If-Modified-Since": "Wed, 21 Oct 2015 07:28:00 GMT"}
+
+    def test_get_conditional_request_headers_none(self):
+        """Test _get_conditional_request_headers with None values."""
+        client = Client(token=None, base_url="https://github.com")
+        headers = client._get_conditional_request_headers()
+        assert headers == {}

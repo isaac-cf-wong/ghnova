@@ -63,6 +63,7 @@ class User(BaseUser, Resource):
             username=username, account_id=account_id, etag=etag, last_modified=last_modified, **kwargs
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        data = cast(dict[str, Any], data)
         return data, status_code, etag_value, last_modified_value
 
     def _update_user(  # noqa: PLR0913
@@ -160,6 +161,7 @@ class User(BaseUser, Resource):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        data = cast(dict[str, Any], data)
 
         return data, status_code, etag_value, last_modified_value
 

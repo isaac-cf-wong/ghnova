@@ -12,7 +12,7 @@
 
 **Note:** This project is still in progress. The promised features are not fully ready yet, and APIs are subject to change.
 
-A Python package for interacting with the GiHub API.
+A Python package for interacting with the GitHub API.
 This package provides a simple and intuitive interface to access
 GitHub repositories, users, organizations, issues, and more,
 enabling seamless integration with GitHub instances for automation, data retrieval, and management tasks.

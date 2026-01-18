@@ -108,7 +108,7 @@ class User(BaseUser, Resource):
             bio=bio,
             **kwargs,
         )
-        return self._patch(endpoint=endpoint, data=payload, etag=etag, last_modified=last_modified, **kwargs)
+        return self._patch(endpoint=endpoint, json=payload, etag=etag, last_modified=last_modified, **kwargs)
 
     def update_user(  # noqa: PLR0913
         self,

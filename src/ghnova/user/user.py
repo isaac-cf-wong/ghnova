@@ -26,7 +26,9 @@ class User(BaseUser, Resource):
 
         Args:
             username: The username of the user to retrieve. If None, retrieves the authenticated user.
-            user_id
+            account_id: The account ID of the user to retrieve. If None, retrieves by username.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:

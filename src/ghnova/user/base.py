@@ -67,7 +67,7 @@ class BaseUser:
         twitter_username: str | None,
         company: str | None,
         location: str | None,
-        hirable: str | None,
+        hireable: str | None,
         bio: str | None,
         **kwargs: Any,
     ) -> tuple[str, dict[str, str], dict[str, Any]]:
@@ -80,7 +80,7 @@ class BaseUser:
             twitter_username: The Twitter username of the user.
             company: The company of the user.
             location: The location of the user.
-            hirable: The hirable status of the user.
+            hireable: The hirable status of the user.
             bio: The bio of the user.
             **kwargs: Additional arguments for the request.
 
@@ -110,8 +110,8 @@ class BaseUser:
         if location is not None:
             payload["location"] = location
 
-        if hirable is not None:
-            payload["hireable"] = hirable
+        if hireable is not None:
+            payload["hireable"] = hireable
         if bio is not None:
             payload["bio"] = bio
 

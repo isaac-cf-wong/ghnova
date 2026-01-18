@@ -65,14 +65,23 @@ class AsyncGitHub(Client):
         """
         return ClientSession(headers=headers, **kwargs)
 
-    async def _request(
-        self, method: str, endpoint: str, headers: dict | None = None, timeout: int = 30, **kwargs: Any
+    async def _request(  # noqa: PLR0913
+        self,
+        method: str,
+        endpoint: str,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        headers: dict | None = None,
+        timeout: int = 30,
+        **kwargs: Any,
     ) -> ClientResponse:
         """Make an asynchronous HTTP request to the GitHub API.
 
         Args:
             method: The HTTP method (GET, POST, etc.).
             endpoint: The API endpoint.
+            etag: str | None = None,
+            last_modified: str | None = None,
             headers: Optional headers to include in the request.
             timeout: Request timeout in seconds.
             **kwargs: Additional arguments for the request.
@@ -87,7 +96,10 @@ class AsyncGitHub(Client):
             )
 
         url = self._build_url(endpoint=endpoint)
-        request_headers = {**self.headers, **(headers or {})}
+        conditional_headers = self._get_conditional_request_headers(etag=etag, last_modified=last_modified)
+        if headers:
+            conditional_headers.update(headers)
+        request_headers = {**self.headers, **conditional_headers}
         timeout_obj = ClientTimeout(total=timeout)
         response = await self.session.request(
             method=method, url=url, headers=request_headers, timeout=timeout_obj, **kwargs

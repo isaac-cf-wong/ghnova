@@ -52,3 +52,22 @@ class Client:
             str: The full URL.
         """
         return f"{self.api_url}/{endpoint.lstrip('/')}"
+
+    def _get_conditional_request_headers(
+        self, etag: str | None = None, last_modified: str | None = None
+    ) -> dict[str, str]:
+        """Get headers for conditional requests.
+
+        Args:
+            etag: The ETag value for the resource.
+            last_modified: The Last-Modified timestamp for the resource.
+
+        Returns:
+            A dictionary of headers for the conditional request.
+        """
+        headers: dict[str, str] = {}
+        if etag:
+            headers["if-none-match"] = etag
+        if last_modified:
+            headers["if-modified-since"] = last_modified
+        return headers

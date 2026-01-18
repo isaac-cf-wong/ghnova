@@ -68,29 +68,17 @@ plugins:
 nav:
   - Home: index.md
   - Installation: user_guide/installation.md
-  - User Guide:
-      - Quick Start: user_guide/quick_start.md
-      - Packaging: user_guide/packaging.md
-      - Project Structure: user_guide/project_structure.md
-      - Development Tools: user_guide/development_tools.md
-      - Testing: user_guide/testing.md
-      - Documentation: user_guide/documentation.md
-      - CI/CD and Releases: user_guide/ci_cd.md
-      - Customization: user_guide/customization.md
   - API Reference:
       - Overview: reference/index.md
       - Modules:
           - ghnova:
               - Overview: reference/ghnova/index.md
-              - Hello World: reference/ghnova/hello_world.md
               - version: reference/ghnova/version.md
               - Utils:
                   - Overview: reference/ghnova/utils/index.md
                   - Logging: reference/ghnova/utils/log.md
   - Developer Guide:
       - Contributing: CONTRIBUTING.md
-      - Code Quality: dev/code_quality.md
-      - Changelog: dev/changelog.md
   - Security: SECURITY.md
   - Troubleshooting: dev/troubleshooting.md
 

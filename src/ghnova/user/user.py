@@ -215,3 +215,55 @@ class User(BaseUser, Resource):
         response = self._list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs)
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+
+    def _get_contextual_information(
+        self,
+        username: str,
+        subject_type: str | None = None,
+        subject_id: str | None = None,
+        **kwargs: Any,
+    ) -> Response:
+        """Get contextual information about a user.
+
+        Args:
+            username: The username of the user.
+            subject_type: The type of subject for the hovercard.
+            subject_id: The ID of the subject for the hovercard.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The response object.
+        """
+        endpoint, params, kwargs = self._get_contextual_information_helper(
+            username=username, subject_type=subject_type, subject_id=subject_id, **kwargs
+        )
+        return self._get(endpoint=endpoint, params=params, **kwargs)
+
+    def get_contextual_information(
+        self,
+        username: str,
+        subject_type: str | None = None,
+        subject_id: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Get contextual information about a user.
+
+        Args:
+            username: The username of the user.
+            subject_type: The type of subject for the hovercard.
+            subject_id: The ID of the subject for the hovercard.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - A dictionary with contextual information about the user.
+                - The HTTP status code.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified timestamp from the response headers (if present).
+        """
+        response = self._get_contextual_information(
+            username=username, subject_type=subject_type, subject_id=subject_id, **kwargs
+        )
+        data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        data = cast(dict[str, Any], data)
+        return data, status_code, etag_value, last_modified_value

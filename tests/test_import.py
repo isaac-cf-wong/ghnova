@@ -1,4 +1,4 @@
-"""Test importing the python-ghnova package and its modules."""
+"""Test importing the ghnova package and its modules."""
 
 from __future__ import annotations
 

@@ -39,6 +39,8 @@ class BaseUser:
 
         Returns:
             A tuple containing the endpoint and the request arguments.
+                - The API endpoint for the user.
+                - A dictionary of request arguments.
         """
         endpoint = self._get_user_endpoint(username=username, account_id=account_id)
         default_headers = {
@@ -86,6 +88,9 @@ class BaseUser:
 
         Returns:
             A tuple containing the endpoint and the request arguments.
+                - The API endpoint for updating the authenticated user.
+                - A dictionary representing the JSON payload.
+                - A dictionary of request arguments.
         """
         endpoint = self._update_user_endpoint()
         default_headers = {
@@ -125,7 +130,9 @@ class BaseUser:
         """
         return "/users"
 
-    def _list_users_helper(self, since: int | None, per_page: int | None, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+    def _list_users_helper(
+        self, since: int | None, per_page: int | None, **kwargs: Any
+    ) -> tuple[str, dict[str, int], dict[str, Any]]:
         """Get the endpoint and arguments for listing all users.
 
         Args:
@@ -135,6 +142,9 @@ class BaseUser:
 
         Returns:
             A tuple containing the endpoint and the request arguments.
+                - The API endpoint for listing all users.
+                - A dictionary of query parameters.
+                - A dictionary of request arguments.
         """
         endpoint = self._list_users_endpoint()
         default_headers = {
@@ -145,11 +155,10 @@ class BaseUser:
         headers = {**default_headers, **headers}
         kwargs["headers"] = headers
 
-        params = kwargs.get("params", {})
+        params = {}
         if since is not None:
             params["since"] = since
         if per_page is not None:
             params["per_page"] = per_page
-        kwargs["params"] = params
 
-        return endpoint, kwargs
+        return endpoint, params, kwargs

@@ -72,7 +72,7 @@ class BaseUser:
         hireable: bool | None,
         bio: str | None,
         **kwargs: Any,
-    ) -> tuple[str, dict[str, str], dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
         """Get the endpoint and arguments for updating the authenticated user.
 
         Args:

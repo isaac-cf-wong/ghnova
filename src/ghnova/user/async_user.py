@@ -8,6 +8,7 @@ from aiohttp import ClientResponse
 
 from ghnova.resource.async_resource import AsyncResource
 from ghnova.user.base import BaseUser
+from ghnova.utils.response import process_async_response_with_last_modified
 
 
 class AsyncUser(BaseUser, AsyncResource):
@@ -70,3 +71,99 @@ class AsyncUser(BaseUser, AsyncResource):
         data = await response.json() if status_code == 200 else {}  # noqa: PLR2004
 
         return data, status_code, etag_value, last_modified_value
+
+    async def _update_user(  # noqa: PLR0913
+        self,
+        name: str | None = None,
+        email: str | None = None,
+        blog: str | None = None,
+        twitter_username: str | None = None,
+        company: str | None = None,
+        location: str | None = None,
+        hireable: bool | None = None,
+        bio: str | None = None,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
+    ) -> ClientResponse:
+        """Asynchronously update the authenticated user's information.
+
+        Args:
+            name: The user's name.
+            email: The user's email.
+            blog: The user's blog URL.
+            twitter_username: The user's Twitter username.
+            company: The user's company.
+            location: The user's location.
+            hireable: Whether the user is available for hire.
+            bio: The user's bio.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The ClientResponse object.
+        """
+        endpoint, payload, kwargs = self._update_user_helper(
+            name=name,
+            email=email,
+            blog=blog,
+            twitter_username=twitter_username,
+            company=company,
+            location=location,
+            hireable=hireable,
+            bio=bio,
+            **kwargs,
+        )
+        return await self._patch(endpoint=endpoint, data=payload, etag=etag, last_modified=last_modified, **kwargs)
+
+    async def update_user(  # noqa: PLR0913
+        self,
+        name: str | None = None,
+        email: str | None = None,
+        blog: str | None = None,
+        twitter_username: str | None = None,
+        company: str | None = None,
+        location: str | None = None,
+        hireable: bool | None = None,
+        bio: str | None = None,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Asynchronously update the authenticated user's information.
+
+        Args:
+            name: The user's name.
+            email: The user's email.
+            blog: The user's blog URL.
+            twitter_username: The user's Twitter username.
+            company: The user's company.
+            location: The user's location.
+            hireable: Whether the user is available for hire.
+            bio: The user's bio.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - A dictionary with updated user information.
+                - The HTTP status code.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified timestamp from the response headers (if present).
+        """
+        response = await self._update_user(
+            name=name,
+            email=email,
+            blog=blog,
+            twitter_username=twitter_username,
+            company=company,
+            location=location,
+            hireable=hireable,
+            bio=bio,
+            etag=etag,
+            last_modified=last_modified,
+            **kwargs,
+        )
+        return await process_async_response_with_last_modified(response)

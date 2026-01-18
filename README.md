@@ -108,7 +108,7 @@ pre-commit install --hook-type commit-msg
 Check that `ghnova` is installed correctly:
 
 ```bash
-ghnova-cli --help
+ghnova --help
 ```
 
 ```bash

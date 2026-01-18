@@ -1,4 +1,4 @@
-# Python Project Template
+# ghnova
 
 [![Python CI](https://github.com/isaac-cf-wong/ghnova/actions/workflows/CI.yml/badge.svg)](https://github.com/isaac-cf-wong/ghnova/actions/workflows/CI.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/isaac-cf-wong/ghnova/main.svg)](https://results.pre-commit.ci/latest/github/isaac-cf-wong/ghnova/main)

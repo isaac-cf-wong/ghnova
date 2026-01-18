@@ -116,3 +116,40 @@ class BaseUser:
             payload["bio"] = bio
 
         return endpoint, payload, kwargs
+
+    def _list_users_endpoint(self) -> str:
+        """Get the endpoint for listing all users.
+
+        Returns:
+            The API endpoint for listing all users.
+        """
+        return "/users"
+
+    def _list_users_helper(self, since: int | None, per_page: int | None, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+        """Get the endpoint and arguments for listing all users.
+
+        Args:
+            since: The user ID to start from.
+            per_page: The number of users per page.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint and the request arguments.
+        """
+        endpoint = self._list_users_endpoint()
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        params = kwargs.get("params", {})
+        if since is not None:
+            params["since"] = since
+        if per_page is not None:
+            params["per_page"] = per_page
+        kwargs["params"] = params
+
+        return endpoint, kwargs

@@ -28,7 +28,7 @@ class AsyncResource:
             **kwargs: Additional arguments for the request.
 
         Returns:
-            The JSON response as a dictionary.
+            The ClientResponse object.
         """
         return await self.client._request(method="GET", endpoint=endpoint, **kwargs)
 
@@ -40,7 +40,7 @@ class AsyncResource:
             **kwargs: Additional arguments for the request.
 
         Returns:
-            The JSON response as a dictionary.
+            The ClientResponse object.
         """
         return await self.client._request(method="POST", endpoint=endpoint, **kwargs)
 
@@ -52,7 +52,7 @@ class AsyncResource:
             **kwargs: Additional arguments for the request.
 
         Returns:
-            The JSON response as a dictionary.
+            The ClientResponse object.
         """
         return await self.client._request(method="PUT", endpoint=endpoint, **kwargs)
 
@@ -64,7 +64,7 @@ class AsyncResource:
             **kwargs: Additional arguments for the request.
 
         Returns:
-            The JSON response as a dictionary.
+            The ClientResponse object.
         """
         return await self.client._request(method="DELETE", endpoint=endpoint, **kwargs)
 
@@ -76,6 +76,6 @@ class AsyncResource:
             **kwargs: Additional arguments for the request.
 
         Returns:
-            The JSON response as a dictionary.
+            The ClientResponse object.
         """
         return await self.client._request(method="PATCH", endpoint=endpoint, **kwargs)

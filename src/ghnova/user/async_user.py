@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from aiohttp import ClientResponse
 
@@ -64,12 +64,8 @@ class AsyncUser(BaseUser, AsyncResource):
         response = await self._get_user(
             username=username, account_id=account_id, etag=etag, last_modified=last_modified, **kwargs
         )
-        status_code = response.status
-        etag_value = response.headers.get("ETag")
-        last_modified_value = response.headers.get("Last-Modified")
-
-        data = await response.json() if status_code == 200 else {}  # noqa: PLR2004
-
+        data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
+        data = cast(dict[str, Any], data)
         return data, status_code, etag_value, last_modified_value
 
     async def _update_user(  # noqa: PLR0913
@@ -166,4 +162,6 @@ class AsyncUser(BaseUser, AsyncResource):
             last_modified=last_modified,
             **kwargs,
         )
-        return await process_async_response_with_last_modified(response)
+        data, status_code, etag, last_modified = await process_async_response_with_last_modified(response)
+        data = cast(dict[str, Any], data)
+        return data, status_code, etag, last_modified

@@ -59,10 +59,29 @@ class BaseUser:
         """
         return "/user"
 
-    def _update_user_helper(self, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+    def _update_user_helper(  # noqa: PLR0913
+        self,
+        name: str | None,
+        email: str | None,
+        blog: str | None,
+        twitter_username: str | None,
+        company: str | None,
+        location: str | None,
+        hirable: str | None,
+        bio: str | None,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, str], dict[str, Any]]:
         """Get the endpoint and arguments for updating the authenticated user.
 
         Args:
+            name: The name of the user.
+            email: The email of the user.
+            blog: The blog URL of the user.
+            twitter_username: The Twitter username of the user.
+            company: The company of the user.
+            location: The location of the user.
+            hirable: The hirable status of the user.
+            bio: The bio of the user.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -77,4 +96,23 @@ class BaseUser:
         headers = {**default_headers, **headers}
         kwargs["headers"] = headers
 
-        return endpoint, kwargs
+        payload = {}
+        if name is not None:
+            payload["name"] = name
+        if email is not None:
+            payload["email"] = email
+        if blog is not None:
+            payload["blog"] = blog
+        if twitter_username is not None:
+            payload["twitter_username"] = twitter_username
+        if company is not None:
+            payload["company"] = company
+        if location is not None:
+            payload["location"] = location
+
+        if hirable is not None:
+            payload["hireable"] = hirable
+        if bio is not None:
+            payload["bio"] = bio
+
+        return endpoint, payload, kwargs

@@ -94,7 +94,7 @@ This guide covers common issues you might encounter when using this template and
 4. Verify installation:
 
     ```bash
-    python -c "import your_package; print(your_package.__version__)"
+    python -c "import ghnova; print(ghnova.__version__)"
     ```
 
 <!-- prettier-ignore-end -->

@@ -89,9 +89,9 @@ class AsyncGitHub(Client):
         url = self._build_url(endpoint=endpoint)
         request_headers = {**self.headers, **(headers or {})}
         timeout_obj = ClientTimeout(total=timeout)
-        async with self.session.request(
+        response = await self.session.request(
             method=method, url=url, headers=request_headers, timeout=timeout_obj, **kwargs
-        ) as response:
-            response.raise_for_status()
+        )
+        response.raise_for_status()
 
-            return response
+        return response

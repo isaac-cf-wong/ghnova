@@ -108,3 +108,86 @@ class TestAsyncUser:
         mock_helper.assert_called_once_with(username="octocat", account_id=None)
         mock_get.assert_called_once_with(endpoint="/users/octocat", etag='"test-etag"', last_modified=None, headers={})
         assert result == mock_get.return_value
+
+    @pytest.mark.asyncio
+    async def test_update_user(self):
+        """Test update_user method."""
+        mock_client = AsyncMock()
+        user = AsyncUser(client=mock_client)
+
+        with (
+            patch.object(user, "_update_user", new_callable=AsyncMock) as mock_update_user,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_update_user.return_value = AsyncMock()
+            mock_process.return_value = (
+                {"login": "octocat", "name": "New Name"},
+                200,
+                '"new-etag"',
+                "Wed, 22 Oct 2015 07:28:00 GMT",
+            )
+            data, status, etag, last_mod = await user.update_user(name="New Name")
+
+        assert data == {"login": "octocat", "name": "New Name"}
+        assert status == 200  # noqa: PLR2004
+        assert etag == '"new-etag"'
+        assert last_mod == "Wed, 22 Oct 2015 07:28:00 GMT"
+        mock_update_user.assert_called_once_with(
+            name="New Name",
+            email=None,
+            blog=None,
+            twitter_username=None,
+            company=None,
+            location=None,
+            hireable=None,
+            bio=None,
+            etag=None,
+            last_modified=None,
+        )
+
+    @pytest.mark.asyncio
+    async def test_list_users(self):
+        """Test list_users method."""
+        mock_client = AsyncMock()
+        user = AsyncUser(client=mock_client)
+
+        with (
+            patch.object(user, "_list_users", new_callable=AsyncMock) as mock_list_users,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_list_users.return_value = AsyncMock()
+            mock_process.return_value = (
+                [{"login": "user1"}, {"login": "user2"}],
+                200,
+                '"etag"',
+                "Wed, 21 Oct 2015 07:28:00 GMT",
+            )
+            data, status, etag, last_mod = await user.list_users(since=100, per_page=50)
+
+        assert data == [{"login": "user1"}, {"login": "user2"}]
+        assert status == 200  # noqa: PLR2004
+        assert etag == '"etag"'
+        assert last_mod == "Wed, 21 Oct 2015 07:28:00 GMT"
+        mock_list_users.assert_called_once_with(since=100, per_page=50, etag=None, last_modified=None)
+
+    @pytest.mark.asyncio
+    async def test_get_contextual_information(self):
+        """Test get_contextual_information method."""
+        mock_client = AsyncMock()
+        user = AsyncUser(client=mock_client)
+
+        with (
+            patch.object(user, "_get_contextual_information", new_callable=AsyncMock) as mock_get_contextual,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_get_contextual.return_value = AsyncMock()
+            mock_process.return_value = ({"contexts": []}, 200, '"etag"', "Wed, 21 Oct 2015 07:28:00 GMT")
+            data, status, etag, last_mod = await user.get_contextual_information(
+                username="octocat", subject_type="repository", subject_id="123"
+            )
+
+        assert data == {"contexts": []}
+        assert status == 200  # noqa: PLR2004
+        assert etag == '"etag"'
+        assert last_mod == "Wed, 21 Oct 2015 07:28:00 GMT"
+        mock_get_contextual.assert_called_once_with(username="octocat", subject_type="repository", subject_id="123")

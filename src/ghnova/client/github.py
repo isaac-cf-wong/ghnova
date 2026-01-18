@@ -54,14 +54,23 @@ class GitHub(Client):
             self.session.close()
             self.session = None
 
-    def _request(
-        self, method: str, endpoint: str, headers: dict | None = None, timeout: int = 30, **kwargs: Any
+    def _request(  # noqa: PLR0913
+        self,
+        method: str,
+        endpoint: str,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        headers: dict | None = None,
+        timeout: int = 30,
+        **kwargs: Any,
     ) -> Response:
         """Make an HTTP request to the GitHub API.
 
         Args:
             method: The HTTP method (GET, POST, etc.).
             endpoint: The API endpoint.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             headers: Additional headers for the request.
             timeout: Timeout for the request in seconds.
             **kwargs: Additional arguments for the request.
@@ -75,9 +84,9 @@ class GitHub(Client):
                 + "Use 'with GitHub(...) as client:' to ensure proper resource cleanup."
             )
         url = self._build_url(endpoint=endpoint)
-        response = self.session.request(
-            method, url, headers={**self.headers, **(headers or {})}, timeout=timeout, **kwargs
-        )
+        conditional_headers = self._get_conditional_request_headers(etag=etag, last_modified=last_modified)
+        request_headers = {**self.headers, **conditional_headers, **(headers or {})}
+        response = self.session.request(method, url, headers=request_headers, timeout=timeout, **kwargs)
         response.raise_for_status()
 
         return response

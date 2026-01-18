@@ -71,7 +71,7 @@ class TestAsyncGitHub:
 
             client = AsyncGitHub(token="test_token", base_url="https://github.com")
             async with client:
-                response = await client._request("GET", "repos/octocat/Hello-World")
+                response = await client._request("GET", "repos/octocat/Hello-World", etag="test-etag")
 
             assert response == mock_response
             mock_session.request.assert_called_once()

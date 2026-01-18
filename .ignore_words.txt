@@ -27,6 +27,7 @@ getrecursionlimit
 ghnova
 glightbox
 hotfixes
+hovercard
 htmlcov
 inlinevar
 isort

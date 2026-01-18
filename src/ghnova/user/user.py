@@ -214,6 +214,8 @@ class User(BaseUser, Resource):
         """
         response = self._list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs)
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        if status_code == 304:  # noqa: PLR2004
+            data = []
         return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
 
     def _get_contextual_information(

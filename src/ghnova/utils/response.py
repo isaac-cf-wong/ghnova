@@ -18,8 +18,8 @@ def process_response_with_last_modified(
         A tuple containing the response data, status code, ETag, and Last-Modified.
     """
     status_code = response.status_code
-    etag = response.headers.get("ETag")
-    last_modified = response.headers.get("Last-Modified")
+    etag = response.headers.get("ETag", None)
+    last_modified = response.headers.get("Last-Modified", None)
     data = response.json() if status_code == 200 else {}  # noqa: PLR2004
     return data, status_code, etag, last_modified
 
@@ -36,7 +36,7 @@ async def process_async_response_with_last_modified(
         A tuple containing the response data, status code, ETag, and Last-Modified.
     """
     status_code = response.status
-    etag = response.headers.get("ETag")
-    last_modified = response.headers.get("Last-Modified")
+    etag = response.headers.get("ETag", None)
+    last_modified = response.headers.get("Last-Modified", None)
     data = await response.json() if status_code == 200 else {}  # noqa: PLR2004
     return data, status_code, etag, last_modified

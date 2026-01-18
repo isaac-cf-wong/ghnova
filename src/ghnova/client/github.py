@@ -89,6 +89,10 @@ class GitHub(Client):
         conditional_headers = self._get_conditional_request_headers(etag=etag, last_modified=last_modified)
         request_headers = {**self.headers, **conditional_headers, **(headers or {})}
         response = self.session.request(method, url, headers=request_headers, timeout=timeout, **kwargs)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception:
+            response.close()
+            raise
 
         return response

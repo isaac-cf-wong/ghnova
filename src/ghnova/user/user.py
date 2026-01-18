@@ -73,7 +73,7 @@ class User(BaseUser, Resource):
         twitter_username: str | None = None,
         company: str | None = None,
         location: str | None = None,
-        hirable: str | None = None,
+        hireable: str | None = None,
         bio: str | None = None,
         etag: str | None = None,
         last_modified: str | None = None,
@@ -88,7 +88,7 @@ class User(BaseUser, Resource):
             twitter_username: The Twitter username of the user.
             company: The company of the user.
             location: The location of the user.
-            hirable: The hirable status of the user.
+            hireable: The hireable status of the user.
             bio: The bio of the user.
             etag: The ETag value for conditional requests.
             last_modified: The Last-Modified timestamp for conditional requests.
@@ -104,7 +104,7 @@ class User(BaseUser, Resource):
             twitter_username=twitter_username,
             company=company,
             location=location,
-            hirable=hirable,
+            hireable=hireable,
             bio=bio,
             **kwargs,
         )
@@ -118,7 +118,7 @@ class User(BaseUser, Resource):
         twitter_username: str | None = None,
         company: str | None = None,
         location: str | None = None,
-        hirable: str | None = None,
+        hireable: str | None = None,
         bio: str | None = None,
         etag: str | None = None,
         last_modified: str | None = None,
@@ -133,7 +133,7 @@ class User(BaseUser, Resource):
             twitter_username: The Twitter username of the user.
             company: The company of the user.
             location: The location of the user.
-            hirable: The hirable status of the user.
+            hireable: The hireable status of the user.
             bio: The bio of the user.
             etag: The ETag value for conditional requests.
             last_modified: The Last-Modified timestamp for conditional requests.
@@ -153,7 +153,7 @@ class User(BaseUser, Resource):
             twitter_username=twitter_username,
             company=company,
             location=location,
-            hirable=hirable,
+            hireable=hireable,
             bio=bio,
             etag=etag,
             last_modified=last_modified,

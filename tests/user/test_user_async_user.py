@@ -15,13 +15,13 @@ class TestAsyncUser:
         """Test get_user for authenticated user."""
         mock_client = AsyncMock()
         user = AsyncUser(client=mock_client)
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.headers = {"ETag": '"test-etag"', "Last-Modified": "Wed, 21 Oct 2015 07:28:00 GMT"}
-        mock_response.json = AsyncMock(return_value={"login": "octocat"})
 
-        with patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user:
-            mock_get_user.return_value = mock_response
+        with (
+            patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_get_user.return_value = AsyncMock()
+            mock_process.return_value = ({"login": "octocat"}, 200, '"test-etag"', "Wed, 21 Oct 2015 07:28:00 GMT")
             data, status, etag, last_mod = await user.get_user()
 
         assert data == {"login": "octocat"}
@@ -35,13 +35,13 @@ class TestAsyncUser:
         """Test get_user by username."""
         mock_client = AsyncMock()
         user = AsyncUser(client=mock_client)
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.headers = {}
-        mock_response.json = AsyncMock(return_value={"login": "octocat"})
 
-        with patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user:
-            mock_get_user.return_value = mock_response
+        with (
+            patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_get_user.return_value = AsyncMock()
+            mock_process.return_value = ({"login": "octocat"}, 200, None, None)
             data, status, etag, last_mod = await user.get_user(username="octocat")
 
         assert data == {"login": "octocat"}
@@ -55,12 +55,13 @@ class TestAsyncUser:
         """Test get_user with 304 Not Modified."""
         mock_client = AsyncMock()
         user = AsyncUser(client=mock_client)
-        mock_response = AsyncMock()
-        mock_response.status = 304
-        mock_response.headers = {"ETag": '"new-etag"'}
 
-        with patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user:
-            mock_get_user.return_value = mock_response
+        with (
+            patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user,
+            patch("ghnova.user.async_user.process_async_response_with_last_modified") as mock_process,
+        ):
+            mock_get_user.return_value = AsyncMock()
+            mock_process.return_value = ({}, 304, '"new-etag"', None)
             data, status, etag, last_mod = await user.get_user(username="octocat", etag='"old-etag"')
 
         assert data == {}
@@ -80,12 +81,14 @@ class TestAsyncUser:
 
         with patch.object(user, "_get_user", new_callable=AsyncMock) as mock_get_user:
             mock_get_user.return_value = mock_response
-            data, status, _etag, _last_mod = await user.get_user(
+            data, status, etag, last_mod = await user.get_user(
                 username="octocat", etag='"test-etag"', last_modified="Wed, 21 Oct 2015 07:28:00 GMT"
             )
 
         assert data == {"login": "octocat"}
         assert status == 200  # noqa: PLR2004
+        assert etag is None
+        assert last_mod is None
         mock_get_user.assert_called_once_with(
             username="octocat", account_id=None, etag='"test-etag"', last_modified="Wed, 21 Oct 2015 07:28:00 GMT"
         )

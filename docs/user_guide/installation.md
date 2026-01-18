@@ -1,13 +1,5 @@
 # Installation
 
-<!-- prettier-ignore-start -->
-
-!!!warning
-    This is an example installation guide page for a Python package template.
-    Adjust the content as needed for your specific package.
-
-<!-- prettier-ignore-end -->
-
 We recommend using `uv` to manage virtual environments for installing `ghnova`.
 
 If you don't have `uv` installed, you can install it with pip. See the project pages for more details:
@@ -31,14 +23,6 @@ If you don't have `uv` installed, you can install it with pip. See the project p
 <!-- prettier-ignore-end -->
 
 ## Install from PyPI
-
-<!-- prettier-ignore-start -->
-
-!!!warning
-    The package is NOT published to PyPI.
-    This section is for demonstration purposes only.
-
-<!-- prettier-ignore-end -->
 
 The recommended way to install `ghnova` is from PyPI:
 

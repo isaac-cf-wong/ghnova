@@ -23,7 +23,7 @@ class LoggingLevel(str, enum.Enum):
 # Create the main Typer app
 app = typer.Typer(
     name="ghnova",
-    help="Main CLI for package_name.",
+    help="Main CLI for ghnova.",
     rich_markup_mode="rich",
 )
 

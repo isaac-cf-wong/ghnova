@@ -1,5 +1,5 @@
-site_name: Python Package Documentation
-site_description: A GitHub template repository for a Python package
+site_name: ghnova Documentation
+site_description: A Python package for interacting with the GitHub API, offering a simple interface to access repositories, users, organizations, issues, and more for automation and data management.
 site_url: https://isaac-cf-wong.github.io/ghnova
 repo_url: https://github.com/isaac-cf-wong/ghnova
 repo_name: ghnova

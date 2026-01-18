@@ -9,7 +9,7 @@ from aiohttp import ClientResponse, ClientSession, ClientTimeout
 from ghnova.client.base import Client
 
 
-class AsyncGitHub(Client):  # pylint: disable=too-few-public-methods
+class AsyncGitHub(Client):
     """Asynchronous GitHub API client."""
 
     def __init__(self, token: str | None = None, base_url: str = "https://github.com") -> None:

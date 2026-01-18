@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "A GitHub template repository for a Python package"
+title: "ghnova: A Python Package for Interacting with the GitHub API"
 license: "MIT"
 type: software
 authors:
@@ -10,4 +10,3 @@ authors:
 keywords:
   - python
   - github
-  - template

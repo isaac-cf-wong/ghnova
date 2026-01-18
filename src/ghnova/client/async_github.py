@@ -92,6 +92,10 @@ class AsyncGitHub(Client):
         response = await self.session.request(
             method=method, url=url, headers=request_headers, timeout=timeout_obj, **kwargs
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception:
+            response.release()
+            raise
 
         return response

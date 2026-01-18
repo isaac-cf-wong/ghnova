@@ -58,3 +58,23 @@ class BaseUser:
             The API endpoint for updating the authenticated user.
         """
         return "/user"
+
+    def _update_user_helper(self, **kwargs: Any) -> tuple[str, dict[str, Any]]:
+        """Get the endpoint and arguments for updating the authenticated user.
+
+        Args:
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint and the request arguments.
+        """
+        endpoint = self._update_user_endpoint()
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        return endpoint, kwargs

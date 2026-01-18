@@ -8,6 +8,7 @@ import requests
 from requests import Response
 
 from ghnova.client.base import Client
+from ghnova.user.user import User
 
 
 class GitHub(Client):
@@ -22,6 +23,7 @@ class GitHub(Client):
         """
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
+        self.user = User(client=self)
 
     def __str__(self) -> str:
         """Return a string representation of the GitHub client.

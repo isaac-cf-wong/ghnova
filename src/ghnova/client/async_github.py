@@ -97,9 +97,7 @@ class AsyncGitHub(Client):
 
         url = self._build_url(endpoint=endpoint)
         conditional_headers = self._get_conditional_request_headers(etag=etag, last_modified=last_modified)
-        if headers:
-            conditional_headers.update(headers)
-        request_headers = {**self.headers, **conditional_headers}
+        request_headers = {**self.headers, **conditional_headers, **(headers or {})}
         timeout_obj = ClientTimeout(total=timeout)
         response = await self.session.request(
             method=method, url=url, headers=request_headers, timeout=timeout_obj, **kwargs

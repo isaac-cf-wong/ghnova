@@ -162,3 +162,45 @@ class BaseUser:
             params["per_page"] = per_page
 
         return endpoint, params, kwargs
+
+    def _get_contextual_information_endpoint(self) -> str:
+        """Get the endpoint for retrieving contextual information about the authenticated user.
+
+        Returns:
+            The API endpoint for retrieving contextual information.
+        """
+        return "/users/{username}/hovercard"
+
+    def _get_contextual_information_helper(
+        self, username: str, subject_type: str | None = None, subject_id: str | None = None, **kwargs: Any
+    ) -> tuple[str, dict[str, str], dict[str, Any]]:
+        """Get the endpoint and arguments for retrieving contextual information about a user.
+
+        Args:
+            username: The username of the user.
+            subject_type: The type of subject for the hovercard.
+            subject_id: The ID of the subject for the hovercard.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint and the request arguments.
+                - The API endpoint for retrieving contextual information.
+                - A dictionary of query parameters.
+                - A dictionary of request arguments.
+        """
+        endpoint = self._get_contextual_information_endpoint().format(username=username)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        params = {}
+        if subject_type is not None:
+            params["subject_type"] = subject_type
+        if subject_id is not None:
+            params["subject_id"] = subject_id
+
+        return endpoint, params, kwargs

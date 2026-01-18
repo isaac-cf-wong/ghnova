@@ -25,7 +25,7 @@ Full API Coverage: Access to repositories, users, organizations, issues, pull re
 - Asynchronous Support: Built with async/await for non-blocking operations.
 - Type Hints: Full type annotations for better IDE support and code reliability.
 - Comprehensive Documentation: Detailed guides and API reference.
-- Command-Line Interface: Interact with the GiHub API directly from the terminal for
+- Command-Line Interface: Interact with the GitHub API directly from the terminal for
   quick, scriptable operations without writing code.
 
 ## Installation

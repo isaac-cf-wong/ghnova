@@ -8,7 +8,7 @@ from requests import Response
 
 def process_response_with_last_modified(
     response: Response,
-) -> tuple[dict[str, Any], int, str | None, str | None]:
+) -> tuple[dict[str, Any] | list[dict[str, Any]], int, str | None, str | None]:
     """Process an HTTP response and extract data, status, ETag, and Last-Modified.
 
     Args:
@@ -26,7 +26,7 @@ def process_response_with_last_modified(
 
 async def process_async_response_with_last_modified(
     response: ClientResponse,
-) -> tuple[dict[str, Any], int, str | None, str | None]:
+) -> tuple[dict[str, Any] | list[dict[str, Any]], int, str | None, str | None]:
     """Process an asynchronous HTTP response and extract data, status, ETag, and Last-Modified.
 
     Args:

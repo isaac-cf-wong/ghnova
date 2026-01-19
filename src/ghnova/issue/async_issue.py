@@ -419,3 +419,66 @@ class AsyncIssue(BaseIssue, AsyncResource):
         )
         data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
         return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+
+    async def _lock_issue(
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        lock_reason: Literal["off-topic", "too heated", "resolved", "spam"] | None = None,
+        **kwargs: Any,
+    ) -> ClientResponse:
+        """Lock an issue to prevent further comments.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            lock_reason: The reason for locking the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A ClientResponse object from the API call.
+        """
+        endpoint, payload, kwargs = self._lock_issue_helper(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            lock_reason=lock_reason,
+            **kwargs,
+        )
+        return await self._put(endpoint=endpoint, json=payload, **kwargs)
+
+    async def lock_issue(
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        lock_reason: Literal["off-topic", "too heated", "resolved", "spam"] | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Lock an issue to prevent further comments.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            lock_reason: The reason for locking the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - The locked issue as a dictionary.
+                - The HTTP status code of the response.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified value from the response headers (if present).
+        """
+        response = await self._lock_issue(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            lock_reason=lock_reason,
+            **kwargs,
+        )
+        data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value

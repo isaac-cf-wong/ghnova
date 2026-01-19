@@ -278,13 +278,23 @@ class Issue(Resource, BaseIssue):
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
 
-    def _get_issue(self, owner: str, repository: str, issue_number: int, **kwargs: Any) -> Response:
+    def _get_issue(
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
+    ) -> Response:
         """Get a specific issue by its number.
 
         Args:
             owner: The owner of the repository.
             repository: The name of the repository.
             issue_number: The number of the issue.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -296,10 +306,16 @@ class Issue(Resource, BaseIssue):
             issue_number=issue_number,
             **kwargs,
         )
-        return self._get(endpoint=endpoint, **kwargs)
+        return self._get(endpoint=endpoint, etag=etag, last_modified=last_modified, **kwargs)
 
     def get_issue(
-        self, owner: str, repository: str, issue_number: int, **kwargs: Any
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        etag: str | None = None,
+        last_modified: str | None = None,
+        **kwargs: Any,
     ) -> tuple[dict[str, Any], int, str | None, str | None]:
         """Get a specific issue by its number.
 
@@ -307,6 +323,8 @@ class Issue(Resource, BaseIssue):
             owner: The owner of the repository.
             repository: The name of the repository.
             issue_number: The number of the issue.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -320,6 +338,8 @@ class Issue(Resource, BaseIssue):
             owner=owner,
             repository=repository,
             issue_number=issue_number,
+            etag=etag,
+            last_modified=last_modified,
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)

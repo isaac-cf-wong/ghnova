@@ -56,6 +56,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -144,6 +145,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with updated user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -207,6 +209,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A list of user dictionaries (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -258,6 +261,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with contextual information about the user.
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).

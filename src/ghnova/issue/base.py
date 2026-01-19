@@ -248,3 +248,41 @@ class BaseIssue:
             payload["type"] = issue_type
 
         return endpoint, payload, kwargs
+
+    def _get_issue_endpoint(self, owner: str, repository: str, issue_number: int) -> str:
+        """Get the endpoint for a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+
+        Returns:
+            The API endpoint for the specific issue.
+        """
+        return f"/repos/{owner}/{repository}/issues/{issue_number}"
+
+    def _get_issue_helper(
+        self, owner: str, repository: str, issue_number: int, **kwargs: Any
+    ) -> tuple[str, dict[str, Any]]:
+        """Prepare the endpoint and arguments for retrieving a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint and request arguments.
+        """
+        endpoint = self._get_issue_endpoint(owner=owner, repository=repository, issue_number=issue_number)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        return endpoint, kwargs

@@ -184,3 +184,67 @@ class BaseIssue:
             raise ValueError(f"Invalid endpoint type determined: {endpoint_type}")
 
         return endpoint, params, kwargs
+
+    def _create_issue_endpoint(self, owner: str, repository: str) -> str:
+        """Get the endpoint for creating an issue in a repository.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+
+        Returns:
+            The API endpoint for creating an issue.
+        """
+        return f"/repos/{owner}/{repository}/issues"
+
+    def _create_issue_helper(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        title: str,
+        body: str | None = None,
+        assignee: str | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        issue_type: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        """Prepare the endpoint and payload for creating a new issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            title: The title of the issue.
+            body: The body content of the issue.
+            assignee: The assignee of the issue.
+            milestone: The milestone number or title for the issue.
+            labels: A list of labels to assign to the issue.
+            assignees: A list of assignees for the issue.
+            issue_type: The type of the issue.
+            **kwargs: Additional arguments for the request.
+        """
+        endpoint = self._create_issue_endpoint(owner=owner, repository=repository)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        payload: dict[str, str | int | list[str]] = {"title": title}
+        if body is not None:
+            payload["body"] = body
+        if assignee is not None:
+            payload["assignee"] = assignee
+        if milestone is not None:
+            payload["milestone"] = milestone
+        if labels is not None:
+            payload["labels"] = labels
+        if assignees is not None:
+            payload["assignees"] = assignees
+        if issue_type is not None:
+            payload["type"] = issue_type
+
+        return endpoint, payload, kwargs

@@ -78,6 +78,10 @@ nav:
                   - Base Client: reference/ghnova/client/base.md
                   - GitHub: reference/ghnova/client/github.md
                   - AsyncGitHub: reference/ghnova/client/async_github.md
+              - Issue:
+                  - Overview: reference/ghnova/issue/index.md
+                  - Issue: reference/ghnova/issue/issue.md
+                  - Async Issue: reference/ghnova/issue/async_issue.md
               - Version: reference/ghnova/version.md
               - Utils:
                   - Overview: reference/ghnova/utils/index.md

@@ -11,6 +11,7 @@ cff
 ciso
 classmethod
 codespell
+collab
 commitlint
 conftest
 contextlib

@@ -154,6 +154,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A tuple containing:
+
                 - A list of issues as dictionaries.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
@@ -258,6 +259,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A tuple containing:
+
                 - The created issue as a dictionary.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
@@ -329,6 +331,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A tuple containing:
+
                 - The issue as a dictionary.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
@@ -422,7 +425,12 @@ class Issue(Resource, BaseIssue):
             **kwargs: Additional arguments for the request.
 
         Returns:
-            A Response object from the API call.
+            A tuple containing:
+
+                - The updated issue as a dictionary.
+                - The HTTP status code of the response.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified value from the response headers (if present).
         """
         response = self._update_issue(
             owner=owner,
@@ -488,6 +496,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A tuple containing:
+
                 - The locked issue as a dictionary.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
@@ -536,6 +545,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A tuple containing:
+
                 - The unlocked issue as a dictionary.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).

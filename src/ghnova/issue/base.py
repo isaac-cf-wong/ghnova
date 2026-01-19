@@ -412,3 +412,45 @@ class BaseIssue:
         payload = {"lock_reason": lock_reason} if lock_reason is not None else {}
 
         return endpoint, payload, kwargs
+
+    def _unlock_issue_endpoint(self, owner: str, repository: str, issue_number: int) -> str:
+        """Get the endpoint for unlocking a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+
+        Returns:
+            The API endpoint for unlocking the specific issue.
+        """
+        return f"/repos/{owner}/{repository}/issues/{issue_number}/lock"
+
+    def _unlock_issue_helper(
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, Any]]:
+        """Prepare the endpoint and arguments for unlocking a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint and request arguments.
+        """
+        endpoint = self._unlock_issue_endpoint(owner, repository, issue_number)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        return endpoint, kwargs

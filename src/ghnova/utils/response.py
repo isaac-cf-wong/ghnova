@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from aiohttp import ClientResponse
+from aiohttp import ClientResponse, ContentTypeError
 from requests import Response
 
 logger = logging.getLogger("ghnova")
@@ -55,7 +55,7 @@ async def process_async_response_with_last_modified(
     elif 200 <= status_code < 300:  # noqa: PLR2004
         try:
             data = await response.json()
-        except ValueError as e:
+        except (ValueError, ContentTypeError) as e:
             logger.error("Failed to parse JSON response: %s", e)
             data = {}
     else:

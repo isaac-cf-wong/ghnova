@@ -7,6 +7,7 @@ from typing import Any
 from aiohttp import ClientResponse, ClientSession, ClientTimeout
 
 from ghnova.client.base import Client
+from ghnova.issue.async_issue import AsyncIssue
 from ghnova.user.async_user import AsyncUser
 
 
@@ -22,6 +23,7 @@ class AsyncGitHub(Client):
         """
         super().__init__(token=token, base_url=base_url)
         self.session: ClientSession | None = None
+        self.issue = AsyncIssue(client=self)
         self.user = AsyncUser(client=self)
 
     def __str__(self) -> str:

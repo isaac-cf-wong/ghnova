@@ -324,3 +324,98 @@ class AsyncIssue(BaseIssue, AsyncResource):
         )
         data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
         return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+
+    async def _update_issue(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        title: str | None = None,
+        body: str | None = None,
+        assignee: str | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        state: Literal["open", "closed"] | None = None,
+        **kwargs: Any,
+    ) -> ClientResponse:
+        """Update an existing issue in a repository.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            title: The new title of the issue.
+            body: The new body content of the issue.
+            assignee: The username of the new assignee.
+            milestone: The new milestone number or title to associate with the issue.
+            labels: A new list of labels to assign to the issue.
+            assignees: A new list of usernames to assign to the issue.
+            state: The new state of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A Response object from the API call.
+        """
+        endpoint, payload, kwargs = self._update_issue_helper(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            title=title,
+            body=body,
+            assignee=assignee,
+            milestone=milestone,
+            labels=labels,
+            assignees=assignees,
+            state=state,
+            **kwargs,
+        )
+        return await self._patch(endpoint=endpoint, json=payload, **kwargs)
+
+    async def update_issue(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        title: str | None = None,
+        body: str | None = None,
+        assignee: str | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        state: Literal["open", "closed"] | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Update an existing issue in a repository.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            title: The new title of the issue.
+            body: The new body content of the issue.
+            assignee: The username of the new assignee.
+            milestone: The new milestone number or title to associate with the issue.
+            labels: A new list of labels to assign to the issue.
+            assignees: A new list of usernames to assign to the issue.
+            state: The new state of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A Response object from the API call.
+        """
+        response = await self._update_issue(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            title=title,
+            body=body,
+            assignee=assignee,
+            milestone=milestone,
+            labels=labels,
+            assignees=assignees,
+            state=state,
+            **kwargs,
+        )
+        data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value

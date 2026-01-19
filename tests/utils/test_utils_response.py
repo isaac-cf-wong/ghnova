@@ -37,16 +37,42 @@ class TestResponseUtils:
         assert etag == '"new-etag"'
         assert last_mod is None
 
-    def test_process_response_with_last_modified_no_headers(self):
-        """Test processing response without ETag or Last-Modified."""
+    def test_process_response_with_last_modified_204(self):
+        """Test processing response with status 204."""
         mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.headers = {}
-        mock_response.json.return_value = {"data": "test"}
+        mock_response.status_code = 204
+        mock_response.headers = {"ETag": '"test-etag"'}
 
         data, status, etag, last_mod = process_response_with_last_modified(mock_response)
 
-        assert data == {"data": "test"}
+        assert data == {}
+        assert status == 204  # noqa: PLR2004
+        assert etag == '"test-etag"'
+        assert last_mod is None
+
+    def test_process_response_with_last_modified_404(self):
+        """Test processing response with status 404."""
+        mock_response = MagicMock()
+        mock_response.status_code = 404
+        mock_response.headers = {}
+
+        data, status, etag, last_mod = process_response_with_last_modified(mock_response)
+
+        assert data == {}
+        assert status == 404  # noqa: PLR2004
+        assert etag is None
+        assert last_mod is None
+
+    def test_process_response_with_last_modified_json_error(self):
+        """Test processing response with JSON parsing error."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.headers = {}
+        mock_response.json.side_effect = ValueError("Invalid JSON")
+
+        data, status, etag, last_mod = process_response_with_last_modified(mock_response)
+
+        assert data == {}
         assert status == 200  # noqa: PLR2004
         assert etag is None
         assert last_mod is None
@@ -81,16 +107,44 @@ class TestResponseUtils:
         assert last_mod is None
 
     @pytest.mark.asyncio
-    async def test_process_async_response_with_last_modified_no_headers(self):
-        """Test processing async response without ETag or Last-Modified."""
+    async def test_process_async_response_with_last_modified_204(self):
+        """Test processing async response with status 204."""
         mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.headers = {}
-        mock_response.json = AsyncMock(return_value={"data": "test"})
+        mock_response.status = 204
+        mock_response.headers = {"ETag": '"test-etag"'}
 
         data, status, etag, last_mod = await process_async_response_with_last_modified(mock_response)
 
-        assert data == {"data": "test"}
+        assert data == {}
+        assert status == 204  # noqa: PLR2004
+        assert etag == '"test-etag"'
+        assert last_mod is None
+
+    @pytest.mark.asyncio
+    async def test_process_async_response_with_last_modified_404(self):
+        """Test processing async response with status 404."""
+        mock_response = AsyncMock()
+        mock_response.status = 404
+        mock_response.headers = {}
+
+        data, status, etag, last_mod = await process_async_response_with_last_modified(mock_response)
+
+        assert data == {}
+        assert status == 404  # noqa: PLR2004
+        assert etag is None
+        assert last_mod is None
+
+    @pytest.mark.asyncio
+    async def test_process_async_response_with_last_modified_json_error(self):
+        """Test processing async response with JSON parsing error."""
+        mock_response = AsyncMock()
+        mock_response.status = 200
+        mock_response.headers = {}
+        mock_response.json = AsyncMock(side_effect=ValueError("Invalid JSON"))
+
+        data, status, etag, last_mod = await process_async_response_with_last_modified(mock_response)
+
+        assert data == {}
         assert status == 200  # noqa: PLR2004
         assert etag is None
         assert last_mod is None

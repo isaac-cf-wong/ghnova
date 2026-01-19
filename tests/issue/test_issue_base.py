@@ -108,23 +108,67 @@ class TestBaseIssue:
             "X-GitHub-Api-Version": "2022-11-28",
         }
 
-    def test_list_issues_helper_with_additional_headers(self):
-        """Test _list_issues_helper with additional headers."""
+    def test_list_issues_helper_authenticated_user_invalid_params(self):
+        """Test _list_issues_helper for authenticated user with invalid parameters."""
         base_issue = BaseIssue()
-        endpoint, params, kwargs = base_issue._list_issues_helper(
-            headers={"Authorization": "Bearer token"}, state="open"
+        endpoint, params, _kwargs = base_issue._list_issues_helper(
+            milestone="v1.0", assignee="user", creator="creator", mentioned="mentioned"
         )
         assert endpoint == "/issues"
-        assert params == {
-            "state": "open",
-            "page": 1,
-            "per_page": 30,
-        }
-        assert kwargs["headers"] == {
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28",
-            "Authorization": "Bearer token",
-        }
+        # Invalid params should not be in params
+        assert "milestone" not in params
+        assert "assignee" not in params
+        assert "creator" not in params
+        assert "mentioned" not in params
+        assert params["page"] == 1
+        assert params["per_page"] == 30  # noqa: PLR2004
+
+    def test_list_issues_helper_organization_invalid_params(self):
+        """Test _list_issues_helper for organization with invalid parameters."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(
+            organization="test-org",
+            collab=True,
+            orgs=True,
+            owned=True,
+            pulls=True,
+            milestone="v1.0",
+            assignee="user",
+            creator="creator",
+            mentioned="mentioned",
+        )
+        assert endpoint == "/orgs/test-org/issues"
+        # Invalid params should not be in params
+        assert "collab" not in params
+        assert "orgs" not in params
+        assert "owned" not in params
+        assert "pulls" not in params
+        assert "milestone" not in params
+        assert "assignee" not in params
+        assert "creator" not in params
+        assert "mentioned" not in params
+
+    def test_list_issues_helper_repository_invalid_params(self):
+        """Test _list_issues_helper for repository with invalid parameters."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(
+            owner="test-owner",
+            repository="test-repo",
+            filter_by="assigned",
+            collab=True,
+            orgs=True,
+            owned=True,
+            pulls=True,
+            issue_type="issue",
+        )
+        assert endpoint == "/repos/test-owner/test-repo/issues"
+        # Invalid params should not be in params
+        assert "filter" not in params
+        assert "collab" not in params
+        assert "orgs" not in params
+        assert "owned" not in params
+        assert "pulls" not in params
+        assert "type" not in params
 
     def test_create_issue_endpoint(self):
         """Test _create_issue_endpoint."""
@@ -141,16 +185,20 @@ class TestBaseIssue:
             title="Test Issue",
             body="This is a test issue.",
             assignee="test-user",
+            milestone="v1.0",
             labels=["bug"],
             assignees=["user1", "user2"],
+            issue_type="bug",
         )
         assert endpoint == "/repos/test-owner/test-repo/issues"
         assert payload == {
             "title": "Test Issue",
             "body": "This is a test issue.",
             "assignee": "test-user",
+            "milestone": "v1.0",
             "labels": ["bug"],
             "assignees": ["user1", "user2"],
+            "type": "bug",
         }
         assert kwargs["headers"] == {
             "Accept": "application/vnd.github+json",
@@ -259,22 +307,38 @@ class TestBaseIssue:
             "X-GitHub-Api-Version": "2022-11-28",
         }
 
-    def test_update_issue_helper_with_additional_headers(self):
-        """Test _update_issue_helper with additional headers."""
+    def test_update_issue_helper_full(self):
+        """Test _update_issue_helper with all parameters."""
         base_issue = BaseIssue()
         endpoint, payload, kwargs = base_issue._update_issue_helper(
             owner="test-owner",
             repository="test-repo",
             issue_number=123,
             title="Updated Title",
-            headers={"Authorization": "Bearer token"},
+            body="Updated body.",
+            assignee="test-assignee",
+            state="closed",
+            state_reason="completed",
+            milestone="v2.0",
+            labels=["fixed", "enhancement"],
+            assignees=["user1", "user2"],
+            issue_type="bug",
         )
         assert endpoint == "/repos/test-owner/test-repo/issues/123"
-        assert payload == {"title": "Updated Title"}
+        assert payload == {
+            "title": "Updated Title",
+            "body": "Updated body.",
+            "assignee": "test-assignee",
+            "state": "closed",
+            "state_reason": "completed",
+            "milestone": "v2.0",
+            "labels": ["fixed", "enhancement"],
+            "assignees": ["user1", "user2"],
+            "type": "bug",
+        }
         assert kwargs["headers"] == {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "Authorization": "Bearer token",
         }
 
     def test_lock_issue_endpoint(self):

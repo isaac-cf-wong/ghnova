@@ -366,3 +366,49 @@ class BaseIssue:
             payload["type"] = issue_type
 
         return endpoint, payload, kwargs
+
+    def _lock_issue_endpoint(self, owner: str, repository: str, issue_number: int) -> str:
+        """Get the endpoint for locking a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+
+        Returns:
+            The API endpoint for locking the specific issue.
+        """
+        return f"/repos/{owner}/{repository}/issues/{issue_number}/lock"
+
+    def _lock_issue_helper(
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        lock_reason: Literal["off-topic", "too heated", "resolved", "spam"] | None = None,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        """Prepare the endpoint and payload for locking a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            lock_reason: The reason for locking the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint, payload, and request arguments.
+        """
+        endpoint = self._lock_issue_endpoint(owner, repository, issue_number)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        payload = {"lock_reason": lock_reason} if lock_reason is not None else {}
+
+        return endpoint, payload, kwargs

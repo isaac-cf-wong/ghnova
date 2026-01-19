@@ -277,3 +277,50 @@ class Issue(Resource, BaseIssue):
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+
+    def _get_issue(self, owner: str, repository: str, issue_number: int, **kwargs: Any) -> Response:
+        """Get a specific issue by its number.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The Response object from the API call.
+        """
+        endpoint, kwargs = self._get_issue_helper(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            **kwargs,
+        )
+        return self._get(endpoint=endpoint, **kwargs)
+
+    def get_issue(
+        self, owner: str, repository: str, issue_number: int, **kwargs: Any
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Get a specific issue by its number.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - The issue as a dictionary.
+                - The HTTP status code of the response.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified value from the response headers (if present).
+        """
+        response = self._get_issue(
+            owner=owner,
+            repository=repository,
+            issue_number=issue_number,
+            **kwargs,
+        )
+        data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value

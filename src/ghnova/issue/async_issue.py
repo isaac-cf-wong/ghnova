@@ -477,7 +477,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         Returns:
             A tuple containing:
 
-                - The locked issue as a dictionary.
+                - An empty dictionary for 204 No Content responses.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
@@ -526,7 +526,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         Returns:
             A tuple containing:
 
-                - The unlocked issue as a dictionary.
+                - An empty dictionary for 204 No Content responses.
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).

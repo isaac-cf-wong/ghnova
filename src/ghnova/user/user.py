@@ -26,7 +26,9 @@ class User(BaseUser, Resource):
 
         Args:
             username: The username of the user to retrieve. If None, retrieves the authenticated user.
-            user_id
+            account_id: The account ID of the user to retrieve. If None, retrieves by username.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -54,6 +56,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -142,6 +145,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with updated user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -181,9 +185,7 @@ class User(BaseUser, Resource):
             **kwargs: Additional arguments for the request.
 
         Returns:
-            A tuple containing:
-                - A list of user dictionaries.
-                - The HTTP status code.
+            A response object.
         """
         endpoint, params, kwargs = self._list_users_helper(since=since, per_page=per_page, **kwargs)
         return self._get(endpoint=endpoint, params=params, etag=etag, last_modified=last_modified, **kwargs)
@@ -207,6 +209,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A list of user dictionaries (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -258,6 +261,7 @@ class User(BaseUser, Resource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with contextual information about the user.
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).

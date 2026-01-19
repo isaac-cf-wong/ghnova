@@ -1,6 +1,6 @@
 # ghnova
 
-This is the documentation for using this Python package template.
+This is the documentation for using `ghnova`.
 
 ## Next Steps
 

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import logging
 from typing import Any
 
-from aiohttp import ClientResponse
+from aiohttp import ClientResponse, ContentTypeError
 from requests import Response
+
+logger = logging.getLogger("ghnova")
 
 
 def process_response_with_last_modified(
@@ -18,9 +21,18 @@ def process_response_with_last_modified(
         A tuple containing the response data, status code, ETag, and Last-Modified.
     """
     status_code = response.status_code
-    etag = response.headers.get("ETag")
-    last_modified = response.headers.get("Last-Modified")
-    data = response.json() if status_code == 200 else {}  # noqa: PLR2004
+    etag = response.headers.get("ETag", None)
+    last_modified = response.headers.get("Last-Modified", None)
+    if status_code == 204:  # noqa: PLR2004
+        data = {}
+    elif 200 <= status_code < 300:  # noqa: PLR2004
+        try:
+            data = response.json()
+        except ValueError as e:
+            logger.error("Failed to parse JSON response: %s", e)
+            data = {}
+    else:
+        data = {}
     return data, status_code, etag, last_modified
 
 
@@ -36,7 +48,16 @@ async def process_async_response_with_last_modified(
         A tuple containing the response data, status code, ETag, and Last-Modified.
     """
     status_code = response.status
-    etag = response.headers.get("ETag")
-    last_modified = response.headers.get("Last-Modified")
-    data = await response.json() if status_code == 200 else {}  # noqa: PLR2004
+    etag = response.headers.get("ETag", None)
+    last_modified = response.headers.get("Last-Modified", None)
+    if status_code == 204:  # noqa: PLR2004
+        data = {}
+    elif 200 <= status_code < 300:  # noqa: PLR2004
+        try:
+            data = await response.json()
+        except (ValueError, ContentTypeError) as e:
+            logger.error("Failed to parse JSON response: %s", e)
+            data = {}
+    else:
+        data = {}
     return data, status_code, etag, last_modified

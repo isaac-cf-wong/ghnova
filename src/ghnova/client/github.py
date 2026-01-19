@@ -8,6 +8,8 @@ import requests
 from requests import Response
 
 from ghnova.client.base import Client
+from ghnova.issue.issue import Issue
+from ghnova.user.user import User
 
 
 class GitHub(Client):
@@ -22,6 +24,8 @@ class GitHub(Client):
         """
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
+        self.issue = Issue(client=self)
+        self.user = User(client=self)
 
     def __str__(self) -> str:
         """Return a string representation of the GitHub client.
@@ -87,6 +91,10 @@ class GitHub(Client):
         conditional_headers = self._get_conditional_request_headers(etag=etag, last_modified=last_modified)
         request_headers = {**self.headers, **conditional_headers, **(headers or {})}
         response = self.session.request(method, url, headers=request_headers, timeout=timeout, **kwargs)
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except Exception:
+            response.close()
+            raise
 
         return response

@@ -56,6 +56,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with user information (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -144,6 +145,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with updated user information.
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -208,6 +210,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             A tuple containing:
+
                 - A list of user dictionaries (empty if 304 Not Modified).
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
@@ -260,6 +263,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             A tuple containing:
+
                 - A dictionary with contextual information.
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).

@@ -286,3 +286,83 @@ class BaseIssue:
         kwargs["headers"] = headers
 
         return endpoint, kwargs
+
+    def _update_issue_endpoint(self, owner: str, repository: str, issue_number: int) -> str:
+        """Get the endpoint for updating a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+
+        Returns:
+            The API endpoint for updating the specific issue.
+        """
+        return f"/repos/{owner}/{repository}/issues/{issue_number}"
+
+    def _update_issue_helper(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        issue_number: int,
+        title: str | None = None,
+        body: str | None = None,
+        assignee: str | None = None,
+        state: Literal["open", "closed"] | None = None,
+        state_reason: Literal["completed", "not_planned", "duplicate", "reopened", "null"] | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        issue_type: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[str, dict[str, Any], dict[str, Any]]:
+        """Prepare the endpoint and payload for updating a specific issue.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            issue_number: The number of the issue.
+            title: The new title of the issue.
+            body: The new body content of the issue.
+            assignee: The new assignee of the issue.
+            state: The new state of the issue.
+            state_reason: The reason for the state change.
+            milestone: The new milestone number or title for the issue.
+            labels: A new list of labels to assign to the issue.
+            assignees: A new list of assignees for the issue.
+            issue_type: The new type of the issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing the endpoint, payload, and request arguments.
+        """
+        endpoint = self._update_issue_endpoint(owner=owner, repository=repository, issue_number=issue_number)
+        default_headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        headers = kwargs.get("headers", {})
+        headers = {**default_headers, **headers}
+        kwargs["headers"] = headers
+
+        payload: dict[str, Any] = {}
+        if title is not None:
+            payload["title"] = title
+        if body is not None:
+            payload["body"] = body
+        if assignee is not None:
+            payload["assignee"] = assignee
+        if state is not None:
+            payload["state"] = state
+        if state_reason is not None:
+            payload["state_reason"] = state_reason
+        if milestone is not None:
+            payload["milestone"] = milestone
+        if labels is not None:
+            payload["labels"] = labels
+        if assignees is not None:
+            payload["assignees"] = assignees
+        if issue_type is not None:
+            payload["type"] = issue_type
+
+        return endpoint, payload, kwargs

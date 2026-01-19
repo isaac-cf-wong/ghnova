@@ -184,3 +184,96 @@ class Issue(Resource, BaseIssue):
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+
+    def _create_issue(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        title: str,
+        body: str | None = None,
+        assignee: str | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        issue_type: str | None = None,
+        **kwargs: Any,
+    ) -> Response:
+        """Create a new issue in a repository.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            title: The title of the issue.
+            body: The body content of the issue.
+            assignee: The username of the assignee.
+            milestone: The milestone number or title to associate with the issue.
+            labels: A list of labels to assign to the issue.
+            assignees: A list of usernames to assign to the issue.
+            issue_type: The type of issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            The Response object from the API call.
+        """
+        endpoint, payload, kwargs = self._create_issue_helper(
+            owner=owner,
+            repository=repository,
+            title=title,
+            body=body,
+            assignee=assignee,
+            milestone=milestone,
+            labels=labels,
+            assignees=assignees,
+            issue_type=issue_type,
+            **kwargs,
+        )
+        return self._post(endpoint=endpoint, json=payload, **kwargs)
+
+    def create_issue(  # noqa: PLR0913
+        self,
+        owner: str,
+        repository: str,
+        title: str,
+        body: str | None = None,
+        assignee: str | None = None,
+        milestone: str | int | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
+        issue_type: str | None = None,
+        **kwargs: Any,
+    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+        """Create a new issue in a repository.
+
+        Args:
+            owner: The owner of the repository.
+            repository: The name of the repository.
+            title: The title of the issue.
+            body: The body content of the issue.
+            assignee: The username of the assignee.
+            milestone: The milestone number or title to associate with the issue.
+            labels: A list of labels to assign to the issue.
+            assignees: A list of usernames to assign to the issue.
+            issue_type: The type of issue.
+            **kwargs: Additional arguments for the request.
+
+        Returns:
+            A tuple containing:
+                - The created issue as a dictionary.
+                - The HTTP status code of the response.
+                - The ETag value from the response headers (if present).
+                - The Last-Modified value from the response headers (if present).
+        """
+        response = self._create_issue(
+            owner=owner,
+            repository=repository,
+            title=title,
+            body=body,
+            assignee=assignee,
+            milestone=milestone,
+            labels=labels,
+            assignees=assignees,
+            issue_type=issue_type,
+            **kwargs,
+        )
+        data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
+        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value

@@ -1,5 +1,8 @@
 """Unit tests for the base issue class."""
 
+import logging
+from unittest.mock import patch
+
 import pytest
 
 from ghnova.issue.base import BaseIssue
@@ -46,7 +49,7 @@ class TestBaseIssue:
         """Test _list_issues_helper for authenticated user issues."""
         base_issue = BaseIssue()
         endpoint, params, kwargs = base_issue._list_issues_helper(
-            filter_by="assigned", state="open", per_page=50, page=2
+            filter_by="assigned", state="open", per_page=50, page=2, collab=True, orgs=True, owned=True, pulls=True
         )
         assert endpoint == "/issues"
         assert params == {
@@ -54,6 +57,10 @@ class TestBaseIssue:
             "state": "open",
             "per_page": 50,
             "page": 2,
+            "collab": True,
+            "orgs": True,
+            "owned": True,
+            "pulls": True,
         }
         assert kwargs["headers"] == {
             "Accept": "application/vnd.github+json",
@@ -91,6 +98,8 @@ class TestBaseIssue:
             direction="desc",
             milestone="v1.0",
             assignee="test-user",
+            creator="test-creator",
+            mentioned="test-mentioned",
         )
         assert endpoint == "/repos/test-owner/test-repo/issues"
         assert params == {
@@ -100,6 +109,8 @@ class TestBaseIssue:
             "direction": "desc",
             "milestone": "v1.0",
             "assignee": "test-user",
+            "creator": "test-creator",
+            "mentioned": "test-mentioned",
             "page": 1,
             "per_page": 30,
         }
@@ -419,3 +430,74 @@ class TestBaseIssue:
             "X-GitHub-Api-Version": "2022-11-28",
             "Authorization": "Bearer token",
         }
+
+    def test_list_issues_helper_authenticated_user_ignored_params_warnings(self, caplog):
+        """Test _list_issues_helper logs warnings for ignored params in authenticated user issues."""
+        base_issue = BaseIssue()
+        caplog.set_level(logging.WARNING, logger="ghnova")
+        base_issue._list_issues_helper(
+            issue_type="issue",
+            milestone="v1.0",
+            assignee="user",
+            creator="creator",
+            mentioned="mentioned",
+        )
+        assert "The 'issue_type' parameter is ignored for authenticated user issues." in caplog.text
+        assert "The 'milestone' parameter is ignored for authenticated user issues." in caplog.text
+        assert "The 'assignee' parameter is ignored for authenticated user issues." in caplog.text
+        assert "The 'creator' parameter is ignored for authenticated user issues." in caplog.text
+        assert "The 'mentioned' parameter is ignored for authenticated user issues." in caplog.text
+
+    def test_list_issues_helper_organization_ignored_params_warnings(self, caplog):
+        """Test _list_issues_helper logs warnings for ignored params in organization issues."""
+        base_issue = BaseIssue()
+        caplog.set_level(logging.WARNING, logger="ghnova")
+        base_issue._list_issues_helper(
+            organization="test-org",
+            collab=True,
+            orgs=True,
+            owned=True,
+            pulls=True,
+            milestone="v1.0",
+            assignee="user",
+            creator="creator",
+            mentioned="mentioned",
+        )
+        assert "The 'collab' parameter is ignored for organization issues." in caplog.text
+        assert "The 'orgs' parameter is ignored for organization issues." in caplog.text
+        assert "The 'owned' parameter is ignored for organization issues." in caplog.text
+        assert "The 'pulls' parameter is ignored for organization issues." in caplog.text
+        assert "The 'milestone' parameter is ignored for organization issues." in caplog.text
+        assert "The 'assignee' parameter is ignored for organization issues." in caplog.text
+        assert "The 'creator' parameter is ignored for organization issues." in caplog.text
+        assert "The 'mentioned' parameter is ignored for organization issues." in caplog.text
+
+    def test_list_issues_helper_repository_ignored_params_warnings(self, caplog):
+        """Test _list_issues_helper logs warnings for ignored params in repository issues."""
+        base_issue = BaseIssue()
+        caplog.set_level(logging.WARNING, logger="ghnova")
+        base_issue._list_issues_helper(
+            owner="test-owner",
+            repository="test-repo",
+            filter_by="assigned",
+            collab=True,
+            orgs=True,
+            owned=True,
+            pulls=True,
+            issue_type="issue",
+        )
+        assert "The 'filter_by' parameter is ignored for repository issues." in caplog.text
+        assert "The 'collab' parameter is ignored for repository issues." in caplog.text
+        assert "The 'orgs' parameter is ignored for repository issues." in caplog.text
+        assert "The 'owned' parameter is ignored for repository issues." in caplog.text
+        assert "The 'pulls' parameter is ignored for repository issues." in caplog.text
+        assert "The 'issue_type' parameter is ignored for repository issues." in caplog.text
+
+    def test_list_issues_helper_invalid_endpoint_type(self):
+        """Test _list_issues_helper raises ValueError for invalid endpoint type."""
+        base_issue = BaseIssue()
+        with (
+            patch.object(base_issue, "_list_issues_endpoint", return_value=("/issues", "invalid type")),
+            pytest.raises(ValueError, match=r"Invalid endpoint type determined: invalid type"),
+        ):
+            base_issue._list_issues_helper()

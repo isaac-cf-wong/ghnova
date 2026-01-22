@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any, Literal
 
 logger = logging.getLogger("ghnova")
@@ -43,7 +44,7 @@ class BaseIssue:
         labels: list[str] | None = None,
         sort: Literal["created", "updated", "comments"] | None = None,
         direction: Literal["asc", "desc"] | None = None,
-        since: str | None = None,
+        since: datetime | None = None,
         collab: bool | None = None,
         orgs: bool | None = None,
         owned: bool | None = None,
@@ -110,7 +111,7 @@ class BaseIssue:
         if direction is not None:
             params["direction"] = direction
         if since is not None:
-            params["since"] = since
+            params["since"] = since.isoformat()
         if per_page is not None:
             params["per_page"] = per_page
         if page is not None:

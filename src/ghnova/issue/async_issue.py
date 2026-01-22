@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Literal, cast
 
 from aiohttp import ClientResponse
@@ -24,7 +25,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         labels: list[str] | None = None,
         sort: Literal["created", "updated", "comments"] | None = None,
         direction: Literal["asc", "desc"] | None = None,
-        since: str | None = None,
+        since: datetime | None = None,
         collab: bool | None = None,
         orgs: bool | None = None,
         owned: bool | None = None,
@@ -107,7 +108,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
         labels: list[str] | None = None,
         sort: Literal["created", "updated", "comments"] | None = None,
         direction: Literal["asc", "desc"] | None = None,
-        since: str | None = None,
+        since: datetime | None = None,
         collab: bool | None = None,
         orgs: bool | None = None,
         owned: bool | None = None,

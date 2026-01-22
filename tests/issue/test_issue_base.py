@@ -47,9 +47,20 @@ class TestBaseIssue:
 
     def test_list_issues_helper_authenticated_user(self):
         """Test _list_issues_helper for authenticated user issues."""
+        from datetime import datetime  # noqa: PLC0415
+
         base_issue = BaseIssue()
+        since_date = datetime(2024, 1, 1, 0, 0, 0)
         endpoint, params, kwargs = base_issue._list_issues_helper(
-            filter_by="assigned", state="open", per_page=50, page=2, collab=True, orgs=True, owned=True, pulls=True
+            filter_by="assigned",
+            state="open",
+            per_page=50,
+            page=2,
+            since=since_date,
+            collab=True,
+            orgs=True,
+            owned=True,
+            pulls=True,
         )
         assert endpoint == "/issues"
         assert params == {
@@ -57,6 +68,7 @@ class TestBaseIssue:
             "state": "open",
             "per_page": 50,
             "page": 2,
+            "since": "2024-01-01T00:00:00",
             "collab": True,
             "orgs": True,
             "owned": True,
@@ -66,6 +78,76 @@ class TestBaseIssue:
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
         }
+
+    def test_list_issues_helper_authenticated_user_collab(self):
+        """Test _list_issues_helper for authenticated user with collab parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(collab=True)
+        assert endpoint == "/issues"
+        assert params["collab"] is True
+
+    def test_list_issues_helper_authenticated_user_collab_false(self):
+        """Test _list_issues_helper for authenticated user with collab=False."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(collab=False)
+        assert endpoint == "/issues"
+        assert params["collab"] is False
+
+    def test_list_issues_helper_authenticated_user_orgs(self):
+        """Test _list_issues_helper for authenticated user with orgs parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(orgs=True)
+        assert endpoint == "/issues"
+        assert params["orgs"] is True
+
+    def test_list_issues_helper_authenticated_user_orgs_false(self):
+        """Test _list_issues_helper for authenticated user with orgs=False."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(orgs=False)
+        assert endpoint == "/issues"
+        assert params["orgs"] is False
+
+    def test_list_issues_helper_authenticated_user_owned(self):
+        """Test _list_issues_helper for authenticated user with owned parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(owned=True)
+        assert endpoint == "/issues"
+        assert params["owned"] is True
+
+    def test_list_issues_helper_authenticated_user_owned_false(self):
+        """Test _list_issues_helper for authenticated user with owned=False."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(owned=False)
+        assert endpoint == "/issues"
+        assert params["owned"] is False
+
+    def test_list_issues_helper_authenticated_user_filter_by_none(self):
+        """Test _list_issues_helper for authenticated user without filter_by parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper()
+        assert endpoint == "/issues"
+        assert "filter" not in params
+
+    def test_list_issues_helper_authenticated_user_since_none(self):
+        """Test _list_issues_helper for authenticated user without since parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(state="open")
+        assert endpoint == "/issues"
+        assert "since" not in params
+
+    def test_list_issues_helper_authenticated_user_per_page_none(self):
+        """Test _list_issues_helper for authenticated user without per_page parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(per_page=None)
+        assert endpoint == "/issues"
+        assert "per_page" not in params
+
+    def test_list_issues_helper_authenticated_user_page_none(self):
+        """Test _list_issues_helper for authenticated user without page parameter."""
+        base_issue = BaseIssue()
+        endpoint, params, _kwargs = base_issue._list_issues_helper(page=None)
+        assert endpoint == "/issues"
+        assert "page" not in params
 
     def test_list_issues_helper_organization(self):
         """Test _list_issues_helper for organization issues."""

@@ -77,7 +77,7 @@ class BaseRepository:
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
         }
-        headers = kwargs.get("headers", {})
+        headers = kwargs.get("headers") or {}
         headers = {**default_headers, **headers}
         kwargs["headers"] = headers
 

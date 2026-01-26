@@ -104,6 +104,10 @@ class BaseRepository:
             params["direction"] = direction
         params["per_page"] = per_page
         params["page"] = page
+
+        extra_params = kwargs.pop("params", {})
+        params = {**params, **extra_params}
+
         if since is not None:
             if description != "authenticated user's repositories":
                 logger.warning("The 'since' parameter is not applicable when listing an organization's repositories.")

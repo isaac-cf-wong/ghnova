@@ -49,3 +49,9 @@ class Config(BaseModel):
         description="Dictionary of account configurations.",
     )
     """Dictionary of account configurations."""
+
+    default_account: str | None = Field(
+        default=None,
+        description="Name of the default account to use.",
+    )
+    """Name of the default account to use."""

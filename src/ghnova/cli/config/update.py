@@ -47,4 +47,4 @@ def update_command(
         logger.info("Account '%s' updated successfully. Updated fields: %s", name, ", ".join(updated_entries))
     except ValueError as e:
         logger.error("Error updating account: %s", e)
-        typer.Exit(code=1)
+        raise typer.Exit(code=1) from e

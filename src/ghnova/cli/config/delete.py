@@ -47,4 +47,4 @@ def delete_command(
         logger.info("Account '%s' deleted successfully.", name)
     except ValueError as e:
         logger.error("Error deleting account: %s", e)
-        typer.Exit(code=1)
+        raise typer.Exit(code=1) from e

@@ -45,4 +45,4 @@ def add_command(
         logger.info("Account '%s' added successfully.", name)
     except ValueError as e:
         logger.error("Error adding platform: %s", e)
-        typer.Exit(code=1)
+        raise typer.Exit(code=1) from e

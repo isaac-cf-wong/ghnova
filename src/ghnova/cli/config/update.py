@@ -46,7 +46,14 @@ def update_command(
             updated_entries.append("base_url")
         if default is not None:
             updated_entries.append("default_account")
-        logger.info("Account '%s' updated successfully. Updated fields: %s", name, ", ".join(updated_entries))
+        if updated_entries:
+            logger.info(
+                "Account '%s' updated successfully. Updated fields: %s",
+                name,
+                ", ".join(updated_entries),
+            )
+        else:
+            logger.info("Account '%s' updated successfully. No fields changed.", name)
     except ValueError as e:
         logger.error("Error updating account: %s", e)
         raise typer.Exit(code=1) from e

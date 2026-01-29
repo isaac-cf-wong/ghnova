@@ -44,5 +44,5 @@ def add_command(
         config_manager.save_config()
         logger.info("Account '%s' added successfully.", name)
     except ValueError as e:
-        logger.error("Error adding platform: %s", e)
+        logger.error("Error adding account: %s", e)
         raise typer.Exit(code=1) from e

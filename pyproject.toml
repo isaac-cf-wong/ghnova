@@ -177,8 +177,10 @@ lint.extend-select = [
     "PT",  # Flake8-pytest
     "RUF", # Ruff-specific rules
     "PL",  # Add pylint rules for fuller coverage
-    "SIM",  # Similarities
-    "T10",  # Debugger statements
+    "SIM", # Similarities
+    "T10", # Debugger statements
+    "DOC", # Docstring
+    "D",   # Doc style
 ]
 lint.ignore = [
     "E501", # Line length (handled by formatter)

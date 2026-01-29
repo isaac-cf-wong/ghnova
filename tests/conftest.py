@@ -20,4 +20,6 @@ def setup_logger() -> None:
     logger.setLevel(logging.DEBUG)
 
     # Clear any existing handlers to avoid interference
-    logger.handlers.clear()
+    for handler in list(logger.handlers):
+        handler.close()
+        logger.removeHandler(handler)

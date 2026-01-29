@@ -26,6 +26,7 @@ class ConfigManager:
         filename = Path(filename)
         filename.parent.mkdir(parents=True, exist_ok=True)
         self.config_path = filename
+        self._config: Config = Config(accounts={}, default_account=None)
 
     def get_config(self, name: str | None) -> AccountConfig:
         """Get the configuration for a specific account.

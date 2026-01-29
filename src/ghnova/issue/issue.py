@@ -72,6 +72,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             The Response object from the API call.
+
         """
         endpoint, params, kwargs = self._list_issues_helper(
             owner=owner,
@@ -160,6 +161,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._list_issues(
             owner=owner,
@@ -216,6 +218,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             The Response object from the API call.
+
         """
         endpoint, payload, kwargs = self._create_issue_helper(
             owner=owner,
@@ -265,6 +268,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._create_issue(
             owner=owner,
@@ -302,6 +306,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             The Response object from the API call.
+
         """
         endpoint, kwargs = self._get_issue_helper(
             owner=owner,
@@ -337,6 +342,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._get_issue(
             owner=owner,
@@ -380,6 +386,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A Response object from the API call.
+
         """
         endpoint, payload, kwargs = self._update_issue_helper(
             owner=owner,
@@ -432,6 +439,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._update_issue(
             owner=owner,
@@ -468,6 +476,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A Response object from the API call.
+
         """
         endpoint, payload, kwargs = self._lock_issue_helper(
             owner=owner,
@@ -502,6 +511,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._lock_issue(
             owner=owner,
@@ -524,6 +534,7 @@ class Issue(Resource, BaseIssue):
 
         Returns:
             A Response object from the API call.
+
         """
         endpoint, kwargs = self._unlock_issue_helper(
             owner=owner,
@@ -551,6 +562,7 @@ class Issue(Resource, BaseIssue):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = self._unlock_issue(
             owner=owner,

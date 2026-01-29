@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timedelta
 
 import pytest
@@ -74,7 +75,8 @@ class TestBaseRepository:
     def test_list_repositories_helper_visibility_ignored_for_organization(self, caplog):
         """Test that visibility parameter is ignored for organization repositories."""
         repo = BaseRepository()
-        _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", visibility="public")
+        with caplog.at_level(logging.WARNING):
+            _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", visibility="public")
         assert "visibility" not in params
         assert "not applicable" in caplog.text
 
@@ -87,7 +89,8 @@ class TestBaseRepository:
     def test_list_repositories_helper_affiliation_ignored_for_user(self, caplog):
         """Test that affiliation parameter is only used for authenticated user."""
         repo = BaseRepository()
-        _endpoint, params, _kwargs = repo._list_repositories_helper(owner="octocat", affiliation=["owner"])
+        with caplog.at_level(logging.WARNING):
+            _endpoint, params, _kwargs = repo._list_repositories_helper(owner="octocat", affiliation=["owner"])
         assert "affiliation" not in params
         assert "only applicable" in caplog.text
 
@@ -127,7 +130,8 @@ class TestBaseRepository:
         """Test that since parameter is ignored for organization repositories."""
         repo = BaseRepository()
         since_date = datetime(2024, 1, 1)
-        _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", since=since_date)
+        with caplog.at_level(logging.WARNING):
+            _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", since=since_date)
         assert "since" not in params
         assert "not applicable" in caplog.text
 
@@ -142,7 +146,8 @@ class TestBaseRepository:
         """Test that before parameter is ignored for organization repositories."""
         repo = BaseRepository()
         before_date = datetime(2024, 12, 31)
-        _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", before=before_date)
+        with caplog.at_level(logging.WARNING):
+            _endpoint, params, _kwargs = repo._list_repositories_helper(organization="github", before=before_date)
         assert "before" not in params
         assert "not applicable" in caplog.text
 

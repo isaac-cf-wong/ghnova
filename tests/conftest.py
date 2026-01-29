@@ -1,17 +1,25 @@
-"""
-Configuration and fixtures for pytest.
-"""
+"""Configuration and fixtures for pytest."""
 
 from __future__ import annotations
+
+import logging
 
 import pytest
 
 
-@pytest.fixture
-def some_name() -> str:
-    """A simple fixture that provides a string name.
+@pytest.fixture(autouse=True)
+def setup_logger() -> None:
+    """Ensure the ghnova logger is properly configured for testing.
 
-    Returns:
-        A string name.
+    This fixture ensures that:
+    - The logger propagates messages to the root logger (for caplog capture)
+    - The logger level allows all messages to be logged
     """
-    return "developer"
+    logger = logging.getLogger("ghnova")
+    logger.propagate = True
+    logger.setLevel(logging.DEBUG)
+
+    # Clear any existing handlers to avoid interference
+    for handler in list(logger.handlers):
+        handler.close()
+        logger.removeHandler(handler)

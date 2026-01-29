@@ -2,8 +2,10 @@ abstractproperty
 addinivalue
 addopts
 analyse
+appname
 asdict
 autoupdate
+autouse
 buildapi
 Cabe
 caplog

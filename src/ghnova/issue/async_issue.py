@@ -72,6 +72,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             The ClientResponse object containing the list of issues.
+
         """
         endpoint, params, kwargs = self._list_issues_helper(
             owner=owner,
@@ -160,6 +161,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._list_issues(
             owner=owner,
@@ -216,6 +218,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             The ClientResponse object containing the created issue.
+
         """
         endpoint, payload, kwargs = self._create_issue_helper(
             owner=owner,
@@ -265,6 +268,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._create_issue(
             owner=owner,
@@ -292,6 +296,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             The ClientResponse object containing the issue.
+
         """
         endpoint, kwargs = self._get_issue_helper(
             owner=owner,
@@ -319,6 +324,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._get_issue(
             owner=owner,
@@ -360,6 +366,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             A Response object from the API call.
+
         """
         endpoint, payload, kwargs = self._update_issue_helper(
             owner=owner,
@@ -412,6 +419,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._update_issue(
             owner=owner,
@@ -448,6 +456,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             A ClientResponse object from the API call.
+
         """
         endpoint, payload, kwargs = self._lock_issue_helper(
             owner=owner,
@@ -482,6 +491,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._lock_issue(
             owner=owner,
@@ -504,6 +514,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
 
         Returns:
             A ClientResponse object from the API call.
+
         """
         endpoint, kwargs = self._unlock_issue_helper(
             owner=owner,
@@ -531,6 +542,7 @@ class AsyncIssue(BaseIssue, AsyncResource):
                 - The HTTP status code of the response.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified value from the response headers (if present).
+
         """
         response = await self._unlock_issue(
             owner=owner,

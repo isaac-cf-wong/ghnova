@@ -1,3 +1,5 @@
+"""Response processing utilities with Last-Modified handling."""
+
 from __future__ import annotations
 
 import logging
@@ -19,6 +21,7 @@ def process_response_with_last_modified(
 
     Returns:
         A tuple containing the response data, status code, ETag, and Last-Modified.
+
     """
     status_code = response.status_code
     etag = response.headers.get("ETag", None)
@@ -46,6 +49,7 @@ async def process_async_response_with_last_modified(
 
     Returns:
         A tuple containing the response data, status code, ETag, and Last-Modified.
+
     """
     status_code = response.status
     etag = response.headers.get("ETag", None)

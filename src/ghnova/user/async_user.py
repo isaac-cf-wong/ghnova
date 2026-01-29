@@ -33,6 +33,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The ClientResponse object.
+
         """
         endpoint, kwargs = self._get_user_helper(username=username, account_id=account_id, **kwargs)
         return await self._get(endpoint=endpoint, etag=etag, last_modified=last_modified, **kwargs)
@@ -61,6 +62,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = await self._get_user(
             username=username, account_id=account_id, etag=etag, last_modified=last_modified, **kwargs
@@ -100,6 +102,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The ClientResponse object.
+
         """
         endpoint, payload, kwargs = self._update_user_helper(
             name=name,
@@ -150,6 +153,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = await self._update_user(
             name=name,
@@ -187,6 +191,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The ClientResponse object.
+
         """
         endpoint, params, kwargs = self._list_users_helper(since=since, per_page=per_page, **kwargs)
         return await self._get(endpoint=endpoint, params=params, etag=etag, last_modified=last_modified, **kwargs)
@@ -215,6 +220,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = await self._list_users(
             since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs
@@ -240,6 +246,7 @@ class AsyncUser(BaseUser, AsyncResource):
 
         Returns:
             The ClientResponse object.
+
         """
         endpoint, params, kwargs = self._get_contextual_information_helper(
             username=username, subject_type=subject_type, subject_id=subject_id, **kwargs
@@ -268,6 +275,7 @@ class AsyncUser(BaseUser, AsyncResource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = await self._get_contextual_information(
             username=username, subject_type=subject_type, subject_id=subject_id, **kwargs

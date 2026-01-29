@@ -25,6 +25,7 @@ class BaseRepository:
 
         Returns:
             The API endpoint for the repositories and a description.
+
         """
         if owner is None and organization is None:
             return "/user/repos", "authenticated user's repositories"
@@ -71,6 +72,7 @@ class BaseRepository:
                 - The API endpoint for the repositories.
                 - The query parameters for the request.
                 - A dictionary of request arguments.
+
         """
         endpoint, description = self._list_repositories_endpoint(owner=owner, organization=organization)
         default_headers = {

@@ -1,6 +1,4 @@
-"""
-Top-level package for ghnova.
-"""
+"""Top-level package for ghnova."""
 
 from __future__ import annotations
 

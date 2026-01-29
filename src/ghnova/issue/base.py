@@ -24,6 +24,7 @@ class BaseIssue:
 
         Returns:
             A tuple containing the API endpoint for listing issues and a description of the issue type.
+
         """
         if owner is None and organization is None and repository is None:
             return "/issues", "authenticated user issues"
@@ -88,6 +89,7 @@ class BaseIssue:
             per_page: The number of issues per page.
             page: The page number to retrieve.
             **kwargs: Additional arguments for the request.
+
         """
         endpoint, endpoint_type = self._list_issues_endpoint(
             owner=owner, organization=organization, repository=repository
@@ -195,6 +197,7 @@ class BaseIssue:
 
         Returns:
             The API endpoint for creating an issue.
+
         """
         return f"/repos/{owner}/{repository}/issues"
 
@@ -224,6 +227,7 @@ class BaseIssue:
             assignees: A list of assignees for the issue.
             issue_type: The type of the issue.
             **kwargs: Additional arguments for the request.
+
         """
         endpoint = self._create_issue_endpoint(owner=owner, repository=repository)
         default_headers = {
@@ -260,6 +264,7 @@ class BaseIssue:
 
         Returns:
             The API endpoint for the specific issue.
+
         """
         return f"/repos/{owner}/{repository}/issues/{issue_number}"
 
@@ -276,6 +281,7 @@ class BaseIssue:
 
         Returns:
             A tuple containing the endpoint and request arguments.
+
         """
         endpoint = self._get_issue_endpoint(owner=owner, repository=repository, issue_number=issue_number)
         default_headers = {
@@ -298,6 +304,7 @@ class BaseIssue:
 
         Returns:
             The API endpoint for updating the specific issue.
+
         """
         return f"/repos/{owner}/{repository}/issues/{issue_number}"
 
@@ -336,6 +343,7 @@ class BaseIssue:
 
         Returns:
             A tuple containing the endpoint, payload, and request arguments.
+
         """
         endpoint = self._update_issue_endpoint(owner=owner, repository=repository, issue_number=issue_number)
         default_headers = {
@@ -378,6 +386,7 @@ class BaseIssue:
 
         Returns:
             The API endpoint for locking the specific issue.
+
         """
         return f"/repos/{owner}/{repository}/issues/{issue_number}/lock"
 
@@ -400,6 +409,7 @@ class BaseIssue:
 
         Returns:
             A tuple containing the endpoint, payload, and request arguments.
+
         """
         endpoint = self._lock_issue_endpoint(owner, repository, issue_number)
         default_headers = {
@@ -424,6 +434,7 @@ class BaseIssue:
 
         Returns:
             The API endpoint for unlocking the specific issue.
+
         """
         return f"/repos/{owner}/{repository}/issues/{issue_number}/lock"
 
@@ -444,6 +455,7 @@ class BaseIssue:
 
         Returns:
             A tuple containing the endpoint and request arguments.
+
         """
         endpoint = self._unlock_issue_endpoint(owner, repository, issue_number)
         default_headers = {

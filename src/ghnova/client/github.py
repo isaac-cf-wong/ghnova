@@ -21,6 +21,7 @@ class GitHub(Client):
         Args:
             token: The API token for authentication.
             base_url: The base URL of the GitHub instance.
+
         """
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
@@ -32,6 +33,7 @@ class GitHub(Client):
 
         Returns:
             str: String representation.
+
         """
         return f"<GitHub base_url={self.base_url}>"
 
@@ -40,6 +42,7 @@ class GitHub(Client):
 
         Returns:
             The GitHub client instance.
+
         """
         if self.session is not None:
             raise RuntimeError("GitHub session already open; do not re-enter context manager.")
@@ -53,6 +56,7 @@ class GitHub(Client):
             exc_type: The exception type.
             exc_val: The exception value.
             exc_tb: The traceback.
+
         """
         if self.session:
             self.session.close()
@@ -81,6 +85,7 @@ class GitHub(Client):
 
         Returns:
             The HTTP response.
+
         """
         if self.session is None:
             raise RuntimeError(

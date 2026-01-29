@@ -21,6 +21,7 @@ dynamic = ["version"]
 dependencies = [
     "typer==0.21.1",
     "aiohttp==3.13.3",
+    "pydantic==2.12.5",
 ]
 
 [project.optional-dependencies]
@@ -176,8 +177,10 @@ lint.extend-select = [
     "PT",  # Flake8-pytest
     "RUF", # Ruff-specific rules
     "PL",  # Add pylint rules for fuller coverage
-    "SIM",  # Similarities
-    "T10",  # Debugger statements
+    "SIM", # Similarities
+    "T10", # Debugger statements
+    "DOC", # Docstring
+    "D",   # Doc style
 ]
 lint.ignore = [
     "E501", # Line length (handled by formatter)

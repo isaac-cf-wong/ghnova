@@ -33,6 +33,7 @@ class User(BaseUser, Resource):
 
         Returns:
             The response object.
+
         """
         endpoint, kwargs = self._get_user_helper(username=username, account_id=account_id, **kwargs)
         return self._get(endpoint=endpoint, etag=etag, last_modified=last_modified, **kwargs)
@@ -61,6 +62,7 @@ class User(BaseUser, Resource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = self._get_user(
             username=username, account_id=account_id, etag=etag, last_modified=last_modified, **kwargs
@@ -100,6 +102,7 @@ class User(BaseUser, Resource):
 
         Returns:
             The response object.
+
         """
         endpoint, payload, kwargs = self._update_user_helper(
             name=name,
@@ -150,6 +153,7 @@ class User(BaseUser, Resource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = self._update_user(
             name=name,
@@ -182,10 +186,13 @@ class User(BaseUser, Resource):
         Args:
             since: The integer ID of the last User that you've seen.
             per_page: The number of results per page (max 100).
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
             A response object.
+
         """
         endpoint, params, kwargs = self._list_users_helper(since=since, per_page=per_page, **kwargs)
         return self._get(endpoint=endpoint, params=params, etag=etag, last_modified=last_modified, **kwargs)
@@ -214,6 +221,7 @@ class User(BaseUser, Resource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = self._list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs)
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
@@ -238,6 +246,7 @@ class User(BaseUser, Resource):
 
         Returns:
             The response object.
+
         """
         endpoint, params, kwargs = self._get_contextual_information_helper(
             username=username, subject_type=subject_type, subject_id=subject_id, **kwargs
@@ -266,6 +275,7 @@ class User(BaseUser, Resource):
                 - The HTTP status code.
                 - The ETag value from the response headers (if present).
                 - The Last-Modified timestamp from the response headers (if present).
+
         """
         response = self._get_contextual_information(
             username=username, subject_type=subject_type, subject_id=subject_id, **kwargs

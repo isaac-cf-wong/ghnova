@@ -20,6 +20,7 @@ class AccountConfig(BaseModel):
 
         Returns:
             A string representation of the AccountConfig.
+
         """
         return f"AccountConfig(name={self.name}, base_url={self.base_url})"
 
@@ -33,8 +34,8 @@ class AccountConfig(BaseModel):
 
         Returns:
             The normalized base URL.
-        """
 
+        """
         if not v.startswith(("http://", "https://")):
             raise ValueError("base_url must start with http:// or https://")
 

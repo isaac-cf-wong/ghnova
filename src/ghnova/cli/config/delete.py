@@ -21,8 +21,8 @@ def delete_command(
         ctx: Typer context.
         name: Name of the account.
         force: Force deletion without confirmation.
-    """
 
+    """
     import logging  # noqa: PLC0415
 
     from ghnova.config.manager import ConfigManager  # noqa: PLC0415

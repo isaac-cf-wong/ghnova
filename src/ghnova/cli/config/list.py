@@ -10,8 +10,8 @@ def list_command(ctx: typer.Context) -> None:
 
     Args:
         ctx: Typer context.
-    """
 
+    """
     import logging  # noqa: PLC0415
 
     from ghnova.config.manager import ConfigManager  # noqa: PLC0415

@@ -13,7 +13,6 @@ config_app = typer.Typer(
 
 def register_commands() -> None:
     """Register config subcommands."""
-
     from ghnova.cli.config.add import add_command  # noqa: PLC0415
     from ghnova.cli.config.delete import delete_command  # noqa: PLC0415
     from ghnova.cli.config.list import list_command  # noqa: PLC0415

@@ -17,11 +17,13 @@ def update_command(
     """Update the configuration of an existing platform.
 
     Args:
+        ctx: Typer context.
         name: Name of the account.
         token: Token for authentication.
         base_url: Base URL of the platform.
-    """
+        default: Set as default account.
 
+    """
     import logging  # noqa: PLC0415
 
     from ghnova.config.manager import ConfigManager  # noqa: PLC0415

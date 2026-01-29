@@ -25,8 +25,8 @@ def add_command(
         token: Token for authentication.
         base_url: Base URL of the platform.
         is_default: Set as default account.
-    """
 
+    """
     import logging  # noqa: PLC0415
 
     from ghnova.config.manager import ConfigManager  # noqa: PLC0415

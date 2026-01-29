@@ -20,7 +20,8 @@ class ConfigManager:
         """Initialize ConfigManager.
 
         Args:
-            file_name: Name of the configuration file.
+            filename: Name of the configuration file.
+
         """
         filename = filename or Path(platformdirs.user_config_dir(appname="ghnova")) / "config.yaml"
         filename = Path(filename)
@@ -34,6 +35,7 @@ class ConfigManager:
 
         Returns:
             Config: Current configuration.
+
         """
         if self._config is None:
             self._config = self._load_config()
@@ -45,6 +47,7 @@ class ConfigManager:
 
         Args:
             value: New configuration to set.
+
         """
         self._config = value
 
@@ -56,6 +59,7 @@ class ConfigManager:
 
         Returns:
             AccountConfig: Configuration of the specified account.
+
         """
         if self._config is None:
             self.load_config()
@@ -79,6 +83,7 @@ class ConfigManager:
             name: Name of the account.
             token: Authentication token for the account.
             base_url: Base URL of the GitHub platform.
+            is_default: Set as default account.
 
         """
         if self._config is None:
@@ -105,6 +110,8 @@ class ConfigManager:
             name: Name of the account to update.
             token: New authentication token for the account (optional).
             base_url: New base URL of the account (optional).
+            is_default: Set as default account (optional).
+
         """
         if self._config is None:
             self.load_config()
@@ -132,6 +139,7 @@ class ConfigManager:
 
         Args:
             name: Name of the account to delete.
+
         """
         if self._config is None:
             self.load_config()
@@ -152,6 +160,7 @@ class ConfigManager:
 
         Returns:
             Config: Loaded configuration.
+
         """
         filename = filename or self.config_path
         filename = Path(filename)
@@ -171,6 +180,7 @@ class ConfigManager:
 
         Args:
             filename: Optional path to the configuration file.
+
         """
         self.config = self._load_config(filename)
 
@@ -179,6 +189,7 @@ class ConfigManager:
 
         Args:
             filename: Optional path to the configuration file.
+
         """
         filename = filename or self.config_path
         filename = Path(filename)

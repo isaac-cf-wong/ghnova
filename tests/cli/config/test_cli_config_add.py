@@ -20,6 +20,7 @@ def temp_config_file() -> Path:
 
     Returns:
         Path to the temporary config file.
+
     """
     with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
         temp_path = Path(f.name)

@@ -17,6 +17,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for the user.
+
         """
         if username is None and account_id is None:
             return "/user"
@@ -41,6 +42,7 @@ class BaseUser:
             A tuple containing the endpoint and the request arguments.
                 - The API endpoint for the user.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._get_user_endpoint(username=username, account_id=account_id)
         default_headers = {
@@ -58,6 +60,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for updating the authenticated user.
+
         """
         return "/user"
 
@@ -91,6 +94,7 @@ class BaseUser:
                 - The API endpoint for updating the authenticated user.
                 - A dictionary representing the JSON payload.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._update_user_endpoint()
         default_headers = {
@@ -127,6 +131,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for listing all users.
+
         """
         return "/users"
 
@@ -145,6 +150,7 @@ class BaseUser:
                 - The API endpoint for listing all users.
                 - A dictionary of query parameters.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._list_users_endpoint()
         default_headers = {
@@ -168,6 +174,7 @@ class BaseUser:
 
         Returns:
             The API endpoint for retrieving contextual information.
+
         """
         return "/users/{username}/hovercard"
 
@@ -187,6 +194,7 @@ class BaseUser:
                 - The API endpoint for retrieving contextual information.
                 - A dictionary of query parameters.
                 - A dictionary of request arguments.
+
         """
         endpoint = self._get_contextual_information_endpoint().format(username=username)
         default_headers = {

@@ -18,6 +18,7 @@ def temp_config_file() -> Path:
 
     Returns:
         Path to the temporary config file.
+
     """
     with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
         temp_path = Path(f.name)
@@ -38,6 +39,7 @@ def config_manager(temp_config_file: Path) -> ConfigManager:
 
     Returns:
         ConfigManager instance.
+
     """
     return ConfigManager(filename=temp_config_file)
 

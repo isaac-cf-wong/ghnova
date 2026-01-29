@@ -35,6 +35,6 @@ def list_command(ctx: typer.Context) -> None:
     typer.echo("Configured accounts:")
 
     for account in accounts.values():
-        typer.echo(f"Name: {account.name}")
-        typer.echo(f"  Base URL: {account.base_url}")
+        typer.echo(f"  Name: {account.name}")
+        typer.echo(f"    Base URL: {account.base_url}")
         typer.echo("")

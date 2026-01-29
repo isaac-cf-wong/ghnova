@@ -5,6 +5,7 @@ analyse
 appname
 asdict
 autoupdate
+autouse
 buildapi
 Cabe
 caplog

@@ -93,8 +93,11 @@ class TestListCommand:
         result = runner.invoke(app, ["--config-path", str(temp_config_with_accounts), "config", "list"])
 
         assert result.exit_code == 0
-        assert "https://github.com" in result.stdout
-        assert "https://github.enterprise.com" in result.stdout
+        # Use regex to match complete URLs in context
+        import re  # noqa: PLC0415
+
+        assert re.search(r"account1.*https://github\.com", result.stdout, re.DOTALL)
+        assert re.search(r"account2.*https://github\.enterprise\.com", result.stdout, re.DOTALL)
 
     def test_list_no_default_account(self, temp_config_file: Path) -> None:
         """Test listing when no default account is set."""

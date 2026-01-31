@@ -37,6 +37,8 @@ class Issue(Resource, BaseIssue):
         mentioned: str | None = None,
         per_page: int = 30,
         page: int = 1,
+        etag: str | None = None,
+        last_modified: str | None = None,
         **kwargs: Any,
     ) -> Response:
         """List issues with various filtering and sorting options.
@@ -68,6 +70,8 @@ class Issue(Resource, BaseIssue):
             mentioned: Filter issues by mentioned user (for repository issues).
             per_page: The number of issues per page.
             page: The page number to retrieve.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -97,7 +101,7 @@ class Issue(Resource, BaseIssue):
             page=page,
             **kwargs,
         )
-        return self._get(endpoint=endpoint, params=params, **kwargs)
+        return self._get(endpoint=endpoint, params=params, etag=etag, last_modified=last_modified, **kwargs)
 
     def list_issues(  # noqa: PLR0913
         self,
@@ -121,6 +125,8 @@ class Issue(Resource, BaseIssue):
         mentioned: str | None = None,
         per_page: int = 30,
         page: int = 1,
+        etag: str | None = None,
+        last_modified: str | None = None,
         **kwargs: Any,
     ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
         """List issues with various filtering and sorting options.
@@ -152,6 +158,8 @@ class Issue(Resource, BaseIssue):
             mentioned: Filter issues by mentioned user (for repository issues).
             per_page: The number of issues per page.
             page: The page number to retrieve.
+            etag: The ETag value for conditional requests.
+            last_modified: The Last-Modified timestamp for conditional requests.
             **kwargs: Additional arguments for the request.
 
         Returns:
@@ -184,6 +192,8 @@ class Issue(Resource, BaseIssue):
             mentioned=mentioned,
             per_page=per_page,
             page=page,
+            etag=etag,
+            last_modified=last_modified,
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)

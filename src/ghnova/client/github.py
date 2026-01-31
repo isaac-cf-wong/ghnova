@@ -9,6 +9,7 @@ from requests import Response
 
 from ghnova.client.base import Client
 from ghnova.issue.issue import Issue
+from ghnova.repository.repository import Repository
 from ghnova.user.user import User
 
 
@@ -26,6 +27,7 @@ class GitHub(Client):
         super().__init__(token=token, base_url=base_url)
         self.session: requests.Session | None = None
         self.issue = Issue(client=self)
+        self.repository = Repository(client=self)
         self.user = User(client=self)
 
     def __str__(self) -> str:

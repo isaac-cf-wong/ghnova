@@ -358,3 +358,73 @@ class TestConfigManagerIntegration:
 
         account = manager2.get_config("test")
         assert account.token == "test_token"
+
+
+class TestConfigManagerHasDefaultAccount:
+    """Tests for ConfigManager has_default_account method."""
+
+    def test_has_default_account_returns_true_when_set(self, config_manager: ConfigManager) -> None:
+        """Test that has_default_account returns True when a default account is set."""
+        config_manager.load_config()
+        config_manager.add_account("test", "test_token")
+
+        assert config_manager.has_default_account() is True
+
+    def test_has_default_account_returns_false_when_not_set(self, config_manager: ConfigManager) -> None:
+        """Test that has_default_account returns False when no default account is set."""
+        config_manager.load_config()
+
+        assert config_manager.has_default_account() is False
+
+    def test_has_default_account_loads_config_if_needed(
+        self, config_manager: ConfigManager, temp_config_file: Path
+    ) -> None:
+        """Test that has_default_account loads config if _config is None."""
+        # Create a config file with a default account
+        config_data = {
+            "accounts": {"test": {"name": "test", "token": "test_token", "base_url": "https://github.com"}},
+            "default_account": "test",
+        }
+
+        with temp_config_file.open("w") as f:
+            yaml.safe_dump(config_data, f)
+
+        # Create new manager (without loading)
+        manager = ConfigManager(filename=temp_config_file)
+        assert manager._config is None
+
+        # Call has_default_account which should load the config
+        result = manager.has_default_account()
+
+        assert manager._config is not None
+        assert result is True
+
+    def test_has_default_account_returns_false_after_deleting_default(self, config_manager: ConfigManager) -> None:
+        """Test that has_default_account returns False after deleting the default account."""
+        config_manager.load_config()
+        config_manager.add_account("test", "test_token")
+
+        assert config_manager.has_default_account() is True
+
+        config_manager.delete_account("test")
+
+        assert config_manager.has_default_account() is False
+
+    def test_has_default_account_returns_true_after_unsetting_then_setting_default(
+        self, config_manager: ConfigManager
+    ) -> None:
+        """Test has_default_account after unsetting and then setting a new default."""
+        config_manager.load_config()
+        config_manager.add_account("account1", "token1")
+        config_manager.add_account("account2", "token2")
+
+        # account1 is default
+        assert config_manager.has_default_account() is True
+
+        # Unset default
+        config_manager.update_account("account1", is_default=False)
+        assert config_manager.has_default_account() is False
+
+        # Set new default
+        config_manager.update_account("account2", is_default=True)
+        assert config_manager.has_default_account() is True

@@ -195,3 +195,15 @@ class ConfigManager:
         filename = Path(filename)
         with filename.open("w", encoding="utf-8") as file:
             yaml.safe_dump(self.config.model_dump(), file)
+
+    def has_default_account(self) -> bool:
+        """Check if a default account is set.
+
+        Returns:
+            bool: True if a default account is set, False otherwise.
+
+        """
+        if self._config is None:
+            self.load_config()
+
+        return self.config.default_account is not None

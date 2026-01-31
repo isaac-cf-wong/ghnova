@@ -58,8 +58,8 @@ class TestUnlockCommand:
         assert result.exit_code == 0
         assert "204" in result.stdout
 
-    def test_unlock_issue_with_custom_token(self, tmp_path) -> None:
-        """Test unlocking issue with custom token."""
+    def test_unlock_issue_account_overrides_custom_token(self, tmp_path) -> None:
+        """Test that account token takes precedence over explicit token."""
         config_file = tmp_path / "config.yaml"
         config_file.write_text(
             "accounts:\n  test:\n    name: test\n    token: test_token\n"

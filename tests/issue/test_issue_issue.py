@@ -48,6 +48,8 @@ class TestIssue:
                 mentioned=None,
                 per_page=30,
                 page=1,
+                etag=None,
+                last_modified=None,
             )
             mock_process.assert_called_once_with(mock_response)
             assert result == (mock_data, mock_status, mock_etag, mock_last_mod)

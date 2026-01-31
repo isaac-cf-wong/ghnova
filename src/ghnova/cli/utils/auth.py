@@ -40,7 +40,21 @@ def get_auth_params(
         account_config = config_manager.get_config(name=account_name)
         token = account_config.token
         base_url = account_config.base_url
-    elif token is None or base_url is None:
-        logger.error("Either account name or both token and base_url must be provided for authentication.")
+        return token, base_url
+    if token is None and base_url is None:
+        config_manager = ConfigManager(filename=config_path)
+        config_manager.load_config()
+
+        if config_manager.has_default_account():
+            account_config = config_manager.get_config(name=None)
+            token = account_config.token
+            base_url = account_config.base_url
+            return token, base_url
+        else:
+            logger.error(
+                "No default account available for authentication. Please provide an account name or token/base_url."
+            )
+            raise ValueError("Insufficient authentication parameters provided.")
+    if token is None or base_url is None:
         raise ValueError("Insufficient authentication parameters provided.")
     return token, base_url

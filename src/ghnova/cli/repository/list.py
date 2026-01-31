@@ -197,5 +197,5 @@ def list_command(  # noqa: PLR0913
             }
             print(json.dumps(result, indent=2, default=str))
     except Exception as e:
-        logger.error("Error listing repositories: %s", e)
+        logger.exception("Error listing repositories: %s", e)
         raise typer.Exit(code=1) from e

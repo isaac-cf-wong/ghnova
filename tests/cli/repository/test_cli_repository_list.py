@@ -293,6 +293,73 @@ class TestListCommand:
         assert result.exit_code == 0
         assert "304" in result.stdout
 
+    def test_list_repositories_with_valid_affiliation(self, tmp_path) -> None:
+        """Test listing repositories with valid affiliation values."""
+        config_file = tmp_path / "config.yaml"
+        config_file.write_text(
+            "accounts:\n  test:\n    name: test\n    token: test_token\n"
+            "    base_url: https://github.com\ndefault_account: test\n"
+        )
+
+        with patch("ghnova.client.github.GitHub") as mock_github:
+            mock_client = mock_github.return_value.__enter__.return_value
+            mock_repository_client = mock_client.repository
+            mock_repository_client.list_repositories.return_value = (
+                [
+                    {"id": 1, "name": "Repo1", "full_name": "user/Repo1", "private": False},
+                ],
+                200,
+                None,
+                None,
+            )
+
+            result = runner.invoke(
+                app,
+                [
+                    "--config-path",
+                    str(config_file),
+                    "repository",
+                    "list",
+                    "--account-name",
+                    "test",
+                    "--affiliation",
+                    "owner",
+                    "--affiliation",
+                    "collaborator",
+                ],
+            )
+
+        assert result.exit_code == 0
+        mock_repository_client.list_repositories.assert_called_once()
+        call_kwargs = mock_repository_client.list_repositories.call_args[1]
+        assert call_kwargs["affiliation"] == ["owner", "collaborator"]
+
+    def test_list_repositories_with_invalid_affiliation(self, tmp_path) -> None:
+        """Test listing repositories with invalid affiliation values."""
+        config_file = tmp_path / "config.yaml"
+        config_file.write_text(
+            "accounts:\n  test:\n    name: test\n    token: test_token\n"
+            "    base_url: https://github.com\ndefault_account: test\n"
+        )
+
+        with patch("ghnova.client.github.GitHub") as _mock_github:
+            result = runner.invoke(
+                app,
+                [
+                    "--config-path",
+                    str(config_file),
+                    "repository",
+                    "list",
+                    "--account-name",
+                    "test",
+                    "--affiliation",
+                    "invalid_value",
+                ],
+            )
+
+        assert result.exit_code == 1
+        assert "Invalid affiliation value" in result.stderr
+
     def test_list_repositories_error_handling(self, tmp_path) -> None:
         """Test error handling in list command."""
         config_file = tmp_path / "config.yaml"

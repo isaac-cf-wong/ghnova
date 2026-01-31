@@ -104,8 +104,10 @@ def register_commands() -> None:
     """Register CLI commands."""
 
     from ghnova.cli.config.main import config_app  # noqa: PLC0415
+    from ghnova.cli.user.main import user_app  # noqa: PLC0415
 
     app.add_typer(config_app)
+    app.add_typer(user_app)
 
 
 register_commands()

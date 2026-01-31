@@ -105,10 +105,12 @@ def register_commands() -> None:
 
     from ghnova.cli.config.main import config_app  # noqa: PLC0415
     from ghnova.cli.issue.main import issue_app  # noqa: PLC0415
+    from ghnova.cli.repository.main import repository_app  # noqa: PLC0415
     from ghnova.cli.user.main import user_app  # noqa: PLC0415
 
     app.add_typer(config_app)
     app.add_typer(issue_app)
+    app.add_typer(repository_app)
     app.add_typer(user_app)
 
 

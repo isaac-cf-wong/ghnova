@@ -32,10 +32,10 @@ def list_command(  # noqa: PLR0913
         ),
     ] = None,
     affiliation: Annotated[
-        list[Literal["owner", "collaborator", "organization_member"]] | None,
+        list[str] | None,
         typer.Option(
             "--affiliation",
-            help="Filter by affiliation: owner, collaborator, or organization_member.",
+            help="Filter by affiliation: owner, collaborator, organization_member.",
         ),
     ] = None,
     repository_type: Annotated[
@@ -147,6 +147,7 @@ def list_command(  # noqa: PLR0913
     """
     import json  # noqa: PLC0415
     import logging  # noqa: PLC0415
+    from typing import cast  # noqa: PLC0415
 
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
@@ -159,6 +160,14 @@ def list_command(  # noqa: PLR0913
         token=token,
         base_url=base_url,
     )
+    affiliation_list = None
+    if affiliation:
+        if not all(a in {"owner", "collaborator", "organization_member"} for a in affiliation):
+            logger.error(
+                "Invalid affiliation value. Must be a comma-separated list of: owner, collaborator, organization_member."
+            )
+            raise typer.Exit(code=1)
+        affiliation_list = cast(list[Literal["owner", "collaborator", "organization_member"]], affiliation)
 
     try:
         with GitHub(token=token, base_url=base_url) as client:
@@ -167,7 +176,7 @@ def list_command(  # noqa: PLR0913
                 owner=owner,
                 organization=organization,
                 visibility=visibility,
-                affiliation=affiliation,
+                affiliation=affiliation_list,
                 repository_type=repository_type,
                 sort=sort,
                 direction=direction,

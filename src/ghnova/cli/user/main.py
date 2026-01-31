@@ -12,7 +12,7 @@ user_app = typer.Typer(
 
 
 def register_commands() -> None:
-    """Register config subcommands."""
+    """Register user subcommands."""
     from ghnova.cli.user.ctx_info import contextual_information_command  # noqa: PLC0415
     from ghnova.cli.user.get import get_command  # noqa: PLC0415
     from ghnova.cli.user.list import list_command  # noqa: PLC0415

@@ -51,10 +51,17 @@ def get_auth_params(
             base_url = account_config.base_url
             return token, base_url
         else:
-            logger.error(
+            raise ValueError(
                 "No default account available for authentication. Please provide an account name or token/base_url."
             )
-            raise ValueError("Insufficient authentication parameters provided.")
     if token is None or base_url is None:
-        raise ValueError("Insufficient authentication parameters provided.")
+        missing_params = []
+        if token is None:
+            missing_params.append("token")
+        if base_url is None:
+            missing_params.append("base_url")
+        raise ValueError(
+            f"Insufficient authentication parameters. Missing: {', '.join(missing_params)}. "
+            f"Please provide both token and base_url, or use an account name."
+        )
     return token, base_url

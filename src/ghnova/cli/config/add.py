@@ -21,7 +21,7 @@ def add_command(
 
     Args:
         ctx: Typer context.
-        name: Name of the account. It does not need to be the same as the GutHub account name.
+        name: Name of the account. It does not need to be the same as the GitHub account name.
         token: Token for authentication.
         base_url: Base URL of the platform.
         is_default: Set as default account.

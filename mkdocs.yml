@@ -82,6 +82,10 @@ nav:
                   - Overview: reference/ghnova/issue/index.md
                   - Issue: reference/ghnova/issue/issue.md
                   - Async Issue: reference/ghnova/issue/async_issue.md
+              - Pull Request:
+                  - Overview: reference/ghnova/pull_request/index.md
+                  - Pull Request: reference/ghnova/pull_request/pull_request.md
+                  - Async Pull Request: reference/ghnova/pull_request/async_pull_request.md
               - User:
                   - Overview: reference/ghnova/user/index.md
                   - User: reference/ghnova/user/user.md

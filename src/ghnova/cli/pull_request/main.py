@@ -13,6 +13,9 @@ pull_request_app = typer.Typer(
 
 def register_commands() -> None:
     """Register pull request subcommands."""
+    from ghnova.cli.pull_request.list import list_command  # noqa: PLC0415
+
+    pull_request_app.command(name="list", help="List pull requests.")(list_command)
 
 
 register_commands()

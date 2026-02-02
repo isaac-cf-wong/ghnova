@@ -6,7 +6,7 @@ import typer
 
 issue_app = typer.Typer(
     name="issue",
-    help="Manage GitHub issues.",
+    help="Manage issues.",
     rich_markup_mode="rich",
 )
 

@@ -6,7 +6,7 @@ import typer
 
 config_app = typer.Typer(
     name="config",
-    help="Manage github configuration.",
+    help="Manage GitHub configuration.",
     rich_markup_mode="rich",
 )
 

@@ -6,7 +6,7 @@ import typer
 
 pull_request_app = typer.Typer(
     name="pull-request",
-    help="Manage GitHub pull requests.",
+    help="Manage pull requests.",
     rich_markup_mode="rich",
 )
 

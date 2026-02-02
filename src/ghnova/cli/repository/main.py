@@ -6,7 +6,7 @@ import typer
 
 repository_app = typer.Typer(
     name="repository",
-    help="Manage git repositories.",
+    help="Manage repositories.",
     rich_markup_mode="rich",
 )
 

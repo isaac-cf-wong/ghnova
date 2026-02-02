@@ -6,7 +6,7 @@ import typer
 
 user_app = typer.Typer(
     name="user",
-    help="Manage git users.",
+    help="Manage users.",
     rich_markup_mode="rich",
 )
 

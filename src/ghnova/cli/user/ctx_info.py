@@ -64,9 +64,10 @@ def contextual_information_command(  # noqa: PLR0913
         subject_id: The ID of the subject for the hovercard.
 
     """
-    import json  # noqa: PLC0415
     import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
 
@@ -83,23 +84,12 @@ def contextual_information_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[dict[str, Any], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            user_client = client.user
-            data, status_code, etag_value, last_modified_value = user_client.get_contextual_information(
+            return client.user.get_contextual_information(
                 username=username,
                 subject_type=subject_type,
                 subject_id=subject_id,
             )
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_value,
-                    "last_modified": last_modified_value,
-                },
-            }
-            print(json.dumps(result, indent=4))
-    except Exception as e:
-        logger.error("Error retrieving contextual information: %s", e)
-        raise typer.Exit(code=1) from e
+
+    execute_api_command(api_call=api_call, command_name="ghnova user ctx-info")

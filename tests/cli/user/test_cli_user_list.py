@@ -39,9 +39,7 @@ class TestListCommand:
                     {"login": "octocat", "id": 1},
                     {"login": "cat", "id": 2},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -70,9 +68,7 @@ class TestListCommand:
             mock_user_client = mock_client.user
             mock_user_client.list_users.return_value = (
                 [{"login": "cat", "id": 2}],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -107,9 +103,7 @@ class TestListCommand:
             mock_user_client = mock_client.user
             mock_user_client.list_users.return_value = (
                 [{"login": "octocat", "id": 1}],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -144,9 +138,7 @@ class TestListCommand:
             mock_user_client = mock_client.user
             mock_user_client.list_users.return_value = (
                 [],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

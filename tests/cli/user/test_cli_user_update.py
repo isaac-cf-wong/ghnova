@@ -36,9 +36,7 @@ class TestUpdateCommand:
             mock_user_client = mock_client.user
             mock_user_client.update_user.return_value = (
                 {"login": "octocat", "name": "New Name", "id": 1},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -73,9 +71,7 @@ class TestUpdateCommand:
             mock_user_client = mock_client.user
             mock_user_client.update_user.return_value = (
                 {"login": "octocat", "email": "new@example.com", "id": 1},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -116,9 +112,7 @@ class TestUpdateCommand:
                     "location": "San Francisco",
                     "id": 1,
                 },
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -158,9 +152,7 @@ class TestUpdateCommand:
             mock_user_client = mock_client.user
             mock_user_client.update_user.return_value = (
                 {"login": "octocat", "bio": "Developer", "id": 1},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -195,9 +187,7 @@ class TestUpdateCommand:
             mock_user_client = mock_client.user
             mock_user_client.update_user.return_value = (
                 {"login": "octocat", "hireable": True, "id": 1},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

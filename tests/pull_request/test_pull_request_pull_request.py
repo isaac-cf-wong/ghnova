@@ -116,7 +116,10 @@ class TestPullRequest:
                 last_modified=None,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_list_pull_requests_with_all_params(self):
         """Test list_pull_requests method with all parameters."""
@@ -163,7 +166,10 @@ class TestPullRequest:
                 last_modified="Wed, 20 Oct 2015 07:28:00 GMT",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_private_list_pull_requests(self):
         """Test _list_pull_requests method."""

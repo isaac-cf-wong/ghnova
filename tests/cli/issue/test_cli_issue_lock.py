@@ -32,9 +32,7 @@ class TestLockCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.lock_issue.return_value = (
                 {"id": 1, "number": 42, "locked": True},
-                204,
-                None,
-                None,
+                {"status_code": 204, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -71,9 +69,7 @@ class TestLockCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.lock_issue.return_value = (
                 {"id": 1, "number": 42, "locked": True},
-                204,
-                None,
-                None,
+                {"status_code": 204, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

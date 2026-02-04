@@ -35,9 +35,7 @@ class TestListCommand:
                     {"id": 1, "number": 1, "title": "First issue", "state": "open"},
                     {"id": 2, "number": 2, "title": "Second issue", "state": "closed"},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -76,9 +74,7 @@ class TestListCommand:
                 [
                     {"id": 1, "number": 1, "title": "Open issue", "state": "open"},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -115,9 +111,7 @@ class TestListCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.list_issues.return_value = (
                 [{"id": 1, "number": 1, "title": "Issue"}],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

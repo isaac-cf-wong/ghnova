@@ -216,9 +216,9 @@ class TestRepository:
         result = self.repository.list_repositories()
 
         assert result[0] == mock_data
-        assert result[1] == 200  # noqa: PLR2004
-        assert result[2] == "etag-value"
-        assert result[3] == "last-modified-value"
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
+        assert result[1]["etag"] == "etag-value"
+        assert result[1]["last_modified"] == "last-modified-value"
         mock_process.assert_called_once_with(mock_response)
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
@@ -232,9 +232,9 @@ class TestRepository:
         result = self.repository.list_repositories(owner="octocat")
 
         assert result[0] == mock_data
-        assert result[1] == 200  # noqa: PLR2004
-        assert result[2] is None
-        assert result[3] is None
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
+        assert result[1]["etag"] is None
+        assert result[1]["last_modified"] is None
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_public_method_with_organization(self, mock_process):
@@ -249,7 +249,7 @@ class TestRepository:
         assert len(result[0]) == 2  # noqa: PLR2004
         assert result[0][0]["name"] == "repo1"
         assert result[0][1]["name"] == "repo2"
-        assert result[1] == 200  # noqa: PLR2004
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_public_method_with_visibility(self, mock_process):
@@ -290,7 +290,7 @@ class TestRepository:
         result = self.repository.list_repositories()
 
         assert result[0] == {}
-        assert result[1] == 204  # noqa: PLR2004
+        assert result[1]["status_code"] == 204  # noqa: PLR2004
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_public_method_response_status_not_found(self, mock_process):
@@ -302,7 +302,7 @@ class TestRepository:
         result = self.repository.list_repositories()
 
         assert result[0] == {}
-        assert result[1] == 404  # noqa: PLR2004
+        assert result[1]["status_code"] == 404  # noqa: PLR2004
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_public_method_with_sort_and_direction(self, mock_process):
@@ -314,7 +314,7 @@ class TestRepository:
 
         result = self.repository.list_repositories(sort="updated", direction="desc")
 
-        assert result[1] == 200  # noqa: PLR2004
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
         call_kwargs = self.mock_client._request.call_args[1]
         assert call_kwargs["params"]["sort"] == "updated"
         assert call_kwargs["params"]["direction"] == "desc"
@@ -329,7 +329,7 @@ class TestRepository:
 
         result = self.repository.list_repositories(affiliation=["owner"])
 
-        assert result[1] == 200  # noqa: PLR2004
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
         call_kwargs = self.mock_client._request.call_args[1]
         assert call_kwargs["params"]["affiliation"] == "owner"
 
@@ -345,7 +345,7 @@ class TestRepository:
 
         result = self.repository.list_repositories(since=since, before=before)
 
-        assert result[1] == 200  # noqa: PLR2004
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
         call_kwargs = self.mock_client._request.call_args[1]
         assert "since" in call_kwargs["params"]
         assert "before" in call_kwargs["params"]
@@ -360,9 +360,9 @@ class TestRepository:
 
         result = self.repository.list_repositories(etag="old-etag", last_modified="old-last-mod")
 
-        assert result[1] == 304  # noqa: PLR2004
-        assert result[2] == "new-etag"
-        assert result[3] == "new-last-mod"
+        assert result[1]["status_code"] == 304  # noqa: PLR2004
+        assert result[1]["etag"] == "new-etag"
+        assert result[1]["last_modified"] == "new-last-mod"
         call_kwargs = self.mock_client._request.call_args[1]
         assert call_kwargs["etag"] == "old-etag"
         assert call_kwargs["last_modified"] == "old-last-mod"
@@ -394,9 +394,9 @@ class TestRepository:
         )
 
         assert result[0] == mock_data
-        assert result[1] == 200  # noqa: PLR2004
-        assert result[2] == "etag"
-        assert result[3] == "last-mod"
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
+        assert result[1]["etag"] == "etag"
+        assert result[1]["last_modified"] == "last-mod"
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_inherits_from_base_repository(self, mock_process):
@@ -423,7 +423,7 @@ class TestRepository:
         result = self.repository.list_repositories()
 
         assert result[0] == []
-        assert result[1] == 200  # noqa: PLR2004
+        assert result[1]["status_code"] == 200  # noqa: PLR2004
 
     @patch("ghnova.repository.repository.process_response_with_last_modified")
     def test_list_repositories_private_method_calls_helper(self, mock_process):

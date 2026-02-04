@@ -35,9 +35,7 @@ class TestListCommand:
                     {"id": 1, "number": 1, "title": "First PR", "state": "open"},
                     {"id": 2, "number": 2, "title": "Second PR", "state": "closed"},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -86,9 +84,7 @@ class TestListCommand:
             mock_pr_client = mock_client.pull_request
             mock_pr_client.list_pull_requests.return_value = (
                 [{"id": 1, "number": 1, "title": "Open PR", "state": "open"}],
-                200,
-                '"etag-value"',
-                "Wed, 21 Oct 2015 07:28:00 GMT",
+                {"status_code": 200, "etag": '"etag-value"', "last_modified": "Wed, 21 Oct 2015 07:28:00 GMT"},
             )
 
             result = runner.invoke(

@@ -52,7 +52,10 @@ class TestIssue:
                 last_modified=None,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_create_issue(self):
         """Test create_issue method."""
@@ -90,7 +93,10 @@ class TestIssue:
                 issue_type=None,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_get_issue(self):
         """Test get_issue method."""
@@ -125,7 +131,10 @@ class TestIssue:
                 last_modified="Wed, 20 Oct 2015 07:28:00 GMT",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_update_issue(self):
         """Test update_issue method."""
@@ -165,7 +174,10 @@ class TestIssue:
                 state="closed",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_lock_issue(self):
         """Test lock_issue method."""
@@ -198,7 +210,10 @@ class TestIssue:
                 lock_reason="off-topic",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     def test_unlock_issue(self):
         """Test unlock_issue method."""
@@ -229,4 +244,7 @@ class TestIssue:
                 issue_number=1,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )

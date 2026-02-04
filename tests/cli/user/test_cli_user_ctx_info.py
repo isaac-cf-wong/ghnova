@@ -45,9 +45,7 @@ class TestContextualInformationCommand:
                         ]
                     }
                 },
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -82,9 +80,7 @@ class TestContextualInformationCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_contextual_information.return_value = (
                 {"hovercard": {"contexts": [{"message": "Org member", "oct_icon": "organization"}]}},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -121,9 +117,7 @@ class TestContextualInformationCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_contextual_information.return_value = (
                 {"hovercard": {"contexts": [{"message": "Mentioned in issue", "oct_icon": "issue"}]}},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -182,9 +176,7 @@ class TestContextualInformationCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_contextual_information.return_value = (
                 {"hovercard": {}},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

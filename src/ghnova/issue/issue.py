@@ -128,7 +128,7 @@ class Issue(Resource, BaseIssue):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List issues with various filtering and sorting options.
 
         Supported scenarios:
@@ -166,9 +166,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - A list of issues as dictionaries.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._list_issues(
@@ -197,7 +195,11 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+        return cast(list[dict[str, Any]], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _create_issue(  # noqa: PLR0913
         self,
@@ -256,7 +258,7 @@ class Issue(Resource, BaseIssue):
         assignees: list[str] | None = None,
         issue_type: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Create a new issue in a repository.
 
         Args:
@@ -275,9 +277,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - The created issue as a dictionary.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._create_issue(
@@ -293,7 +293,11 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+        return cast(dict[str, Any], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _get_issue(
         self,
@@ -334,7 +338,7 @@ class Issue(Resource, BaseIssue):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Get a specific issue by its number.
 
         Args:
@@ -349,9 +353,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - The issue as a dictionary.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._get_issue(
@@ -363,7 +365,11 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+        return cast(dict[str, Any], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _update_issue(  # noqa: PLR0913
         self,
@@ -426,7 +432,7 @@ class Issue(Resource, BaseIssue):
         assignees: list[str] | None = None,
         state: Literal["open", "closed"] | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Update an existing issue in a repository.
 
         Args:
@@ -446,9 +452,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - The updated issue as a dictionary.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._update_issue(
@@ -465,7 +469,11 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+        return cast(dict[str, Any], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _lock_issue(
         self,
@@ -504,7 +512,7 @@ class Issue(Resource, BaseIssue):
         issue_number: int,
         lock_reason: Literal["off-topic", "too heated", "resolved", "spam"] | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Lock an issue to prevent further comments.
 
         Args:
@@ -518,9 +526,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - An empty dictionary for 204 No Content responses.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._lock_issue(
@@ -531,7 +537,11 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+        return cast(dict[str, Any], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _unlock_issue(self, owner: str, repository: str, issue_number: int, **kwargs: Any) -> Response:
         """Unlock a previously locked issue.
@@ -556,7 +566,7 @@ class Issue(Resource, BaseIssue):
 
     def unlock_issue(
         self, owner: str, repository: str, issue_number: int, **kwargs: Any
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Unlock a previously locked issue.
 
         Args:
@@ -569,9 +579,7 @@ class Issue(Resource, BaseIssue):
             A tuple containing:
 
                 - An empty dictionary for 204 No Content responses.
-                - The HTTP status code of the response.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified value from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._unlock_issue(
@@ -581,4 +589,8 @@ class Issue(Resource, BaseIssue):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(dict[str, Any], data), status_code, etag_value, last_modified_value
+        return cast(dict[str, Any], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }

@@ -35,9 +35,7 @@ class TestListCommand:
                     {"id": 1, "name": "Hello-World", "full_name": "octocat/Hello-World", "private": False},
                     {"id": 2, "name": "Spoon-Knife", "full_name": "octocat/Spoon-Knife", "private": False},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -72,9 +70,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Hello-World", "full_name": "octocat/Hello-World", "private": False},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -111,9 +107,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Private-Repo", "full_name": "user/Private-Repo", "private": True},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -150,9 +144,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Repo1", "full_name": "user/Repo1", "updated_at": "2025-01-31T00:00:00Z"},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -192,9 +184,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Repo1", "full_name": "user/Repo1", "private": False},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -234,9 +224,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Repo1", "full_name": "user/Repo1", "private": False},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -271,9 +259,7 @@ class TestListCommand:
             mock_repository_client = mock_client.repository
             mock_repository_client.list_repositories.return_value = (
                 [],
-                304,
-                "etag-value",
-                "Last-Modified-value",
+                {"status_code": 304, "etag": "etag-value", "last_modified": "Last-Modified-value"},
             )
 
             result = runner.invoke(
@@ -308,9 +294,7 @@ class TestListCommand:
                 [
                     {"id": 1, "name": "Repo1", "full_name": "user/Repo1", "private": False},
                 ],
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

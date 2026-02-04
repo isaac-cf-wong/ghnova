@@ -120,13 +120,11 @@ def update_command(  # noqa: PLR0913
         state: The state of the issue (open or closed).
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
-
-    logger = logging.getLogger("ghnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -135,10 +133,9 @@ def update_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[dict[str, Any], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            issue_client = client.issue
-            data, status_code, etag_value, last_modified_value = issue_client.update_issue(
+            return client.issue.update_issue(
                 owner=owner,
                 repository=repository,
                 issue_number=issue_number,
@@ -150,15 +147,5 @@ def update_command(  # noqa: PLR0913
                 assignees=assignees,
                 state=state,
             )
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_value,
-                    "last_modified": last_modified_value,
-                },
-            }
-            print(json.dumps(result, indent=2, default=str))
-    except Exception as e:
-        logger.error("Error updating issue: %s", e)
-        raise typer.Exit(code=1) from e
+
+    execute_api_command(api_call=api_call, command_name="ghnova issue update")

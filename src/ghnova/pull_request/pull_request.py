@@ -77,7 +77,7 @@ class PullRequest(Resource, BasePullRequest):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List pull requests from a repository.
 
         Args:
@@ -95,7 +95,7 @@ class PullRequest(Resource, BasePullRequest):
             **kwargs: Additional keyword arguments.
 
         Returns:
-            A tuple containing the list of pull requests, status code, ETag, and Last-Modified value.
+            A tuple containing the list of pull requests and a dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._list_pull_requests(
@@ -113,4 +113,8 @@ class PullRequest(Resource, BasePullRequest):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+        return cast(list[dict[str, Any]], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }

@@ -46,33 +46,18 @@ def list_command(  # noqa: D103, PLR0913
         typer.Option("--last-modified", help="Last-Modified header from a previous request for caching purposes."),
     ] = None,
 ):
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
-
-    logger = logging.getLogger("ghnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"], account_name=account_name, token=token, base_url=base_url
     )
 
-    try:
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            user_client = client.user
-            data, status_code, etag_value, last_modified_value = user_client.list_users(
-                since=since, per_page=per_page, etag=etag, last_modified=last_modified
-            )
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_value,
-                    "last_modified": last_modified_value,
-                },
-            }
-            typer.echo(json.dumps(result, indent=2, default=str))
-    except Exception as e:
-        logger.error("Error listing users: %s", e)
-        raise typer.Exit(code=1) from e
+            return client.user.list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified)
+
+    execute_api_command(api_call=api_call, command_name="ghnova user list")

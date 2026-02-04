@@ -32,9 +32,7 @@ class TestGetCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.get_issue.return_value = (
                 {"id": 1, "number": 42, "title": "Bug report", "state": "open"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -72,9 +70,7 @@ class TestGetCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.get_issue.return_value = (
                 {"id": 1, "number": 42, "title": "Bug report"},
-                304,
-                "etag-value",
-                "Last-Modified-value",
+                {"status_code": 304, "etag": "etag-value", "last_modified": "Last-Modified-value"},
             )
 
             result = runner.invoke(

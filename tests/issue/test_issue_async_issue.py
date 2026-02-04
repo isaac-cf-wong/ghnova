@@ -53,7 +53,10 @@ class TestAsyncIssue:
                 page=1,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_create_issue(self):
@@ -92,7 +95,10 @@ class TestAsyncIssue:
                 issue_type=None,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_get_issue(self):
@@ -124,7 +130,10 @@ class TestAsyncIssue:
                 issue_number=1,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_update_issue(self):
@@ -165,7 +174,10 @@ class TestAsyncIssue:
                 state="closed",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_lock_issue(self):
@@ -199,7 +211,10 @@ class TestAsyncIssue:
                 lock_reason="off-topic",
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_unlock_issue(self):
@@ -231,7 +246,10 @@ class TestAsyncIssue:
                 issue_number=1,
             )
             mock_process.assert_called_once_with(mock_response)
-            assert result == (mock_data, mock_status, mock_etag, mock_last_mod)
+            assert result == (
+                mock_data,
+                {"status_code": mock_status, "etag": mock_etag, "last_modified": mock_last_mod},
+            )
 
     @pytest.mark.asyncio
     async def test_private_list_issues(self):

@@ -32,9 +32,7 @@ class TestUpdateCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.update_issue.return_value = (
                 {"id": 1, "number": 42, "title": "Updated title", "state": "open"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -74,9 +72,7 @@ class TestUpdateCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.update_issue.return_value = (
                 {"id": 1, "number": 42, "title": "Issue", "state": "closed"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -121,9 +117,7 @@ class TestUpdateCommand:
                     "body": "New body",
                     "state": "closed",
                 },
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -166,9 +160,7 @@ class TestUpdateCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.update_issue.return_value = (
                 {"id": 1, "number": 42, "title": "Issue", "labels": [{"name": "bug"}]},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

@@ -120,13 +120,11 @@ def update_command(  # noqa: PLR0913
         last_modified: Last-Modified header from a previous request for caching purposes.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
-
-    logger = logging.getLogger("ghnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -135,10 +133,9 @@ def update_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[dict[str, Any], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            user_client = client.user
-            data, status_code, etag_value, last_modified_value = user_client.update_user(
+            return client.user.update_user(
                 name=name,
                 email=email,
                 blog=blog,
@@ -150,15 +147,5 @@ def update_command(  # noqa: PLR0913
                 etag=etag,
                 last_modified=last_modified,
             )
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_value,
-                    "last_modified": last_modified_value,
-                },
-            }
-            print(json.dumps(result, indent=2, default=str))
-    except Exception as e:
-        logger.error("Error updating user information: %s", e)
-        raise typer.Exit(code=1) from e
+
+    execute_api_command(api_call=api_call, command_name="ghnova user update")

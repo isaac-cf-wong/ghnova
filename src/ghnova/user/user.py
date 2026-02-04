@@ -45,7 +45,7 @@ class User(BaseUser, Resource):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Get user information.
 
         Args:
@@ -59,9 +59,7 @@ class User(BaseUser, Resource):
             A tuple containing:
 
                 - A dictionary with user information (empty if 304 Not Modified).
-                - The HTTP status code.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified timestamp from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._get_user(
@@ -69,7 +67,7 @@ class User(BaseUser, Resource):
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         data = cast(dict[str, Any], data)
-        return data, status_code, etag_value, last_modified_value
+        return data, {"status_code": status_code, "etag": etag_value, "last_modified": last_modified_value}
 
     def _update_user(  # noqa: PLR0913
         self,
@@ -130,7 +128,7 @@ class User(BaseUser, Resource):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Update the authenticated user's information.
 
         Args:
@@ -150,9 +148,7 @@ class User(BaseUser, Resource):
             A tuple containing:
 
                 - A dictionary with updated user information (empty if 304 Not Modified).
-                - The HTTP status code.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified timestamp from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._update_user(
@@ -171,7 +167,7 @@ class User(BaseUser, Resource):
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         data = cast(dict[str, Any], data)
 
-        return data, status_code, etag_value, last_modified_value
+        return data, {"status_code": status_code, "etag": etag_value, "last_modified": last_modified_value}
 
     def _list_users(
         self,
@@ -204,7 +200,7 @@ class User(BaseUser, Resource):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List all users.
 
         Args:
@@ -218,16 +214,18 @@ class User(BaseUser, Resource):
             A tuple containing:
 
                 - A list of user dictionaries (empty if 304 Not Modified).
-                - The HTTP status code.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified timestamp from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._list_users(since=since, per_page=per_page, etag=etag, last_modified=last_modified, **kwargs)
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         if status_code == 304:  # noqa: PLR2004
             data = []
-        return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+        return cast(list[dict[str, Any]], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }
 
     def _get_contextual_information(
         self,
@@ -259,7 +257,7 @@ class User(BaseUser, Resource):
         subject_type: str | None = None,
         subject_id: str | None = None,
         **kwargs: Any,
-    ) -> tuple[dict[str, Any], int, str | None, str | None]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """Get contextual information about a user.
 
         Args:
@@ -272,9 +270,7 @@ class User(BaseUser, Resource):
             A tuple containing:
 
                 - A dictionary with contextual information about the user.
-                - The HTTP status code.
-                - The ETag value from the response headers (if present).
-                - The Last-Modified timestamp from the response headers (if present).
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = self._get_contextual_information(
@@ -282,4 +278,4 @@ class User(BaseUser, Resource):
         )
         data, status_code, etag_value, last_modified_value = process_response_with_last_modified(response)
         data = cast(dict[str, Any], data)
-        return data, status_code, etag_value, last_modified_value
+        return data, {"status_code": status_code, "etag": etag_value, "last_modified": last_modified_value}

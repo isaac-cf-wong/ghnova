@@ -86,7 +86,7 @@ class AsyncRepository(BaseRepository, AsyncResource):
         etag: str | None = None,
         last_modified: str | None = None,
         **kwargs: Any,
-    ) -> tuple[list[dict[str, Any]], int, str | None, str | None]:
+    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         """List repositories information.
 
         Args:
@@ -109,9 +109,7 @@ class AsyncRepository(BaseRepository, AsyncResource):
             A tuple containing:
 
                 - A list of dictionaries representing the repositories.
-                - The HTTP status code of the response.
-                - The ETag header value from the response, if available.
-                - The Last-Modified header value from the response, if available.
+                - A dictionary with metadata including status_code, etag, and last_modified.
 
         """
         response = await self._list_repositories(
@@ -131,4 +129,8 @@ class AsyncRepository(BaseRepository, AsyncResource):
             **kwargs,
         )
         data, status_code, etag_value, last_modified_value = await process_async_response_with_last_modified(response)
-        return cast(list[dict[str, Any]], data), status_code, etag_value, last_modified_value
+        return cast(list[dict[str, Any]], data), {
+            "status_code": status_code,
+            "etag": etag_value,
+            "last_modified": last_modified_value,
+        }

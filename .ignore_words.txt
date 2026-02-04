@@ -27,6 +27,7 @@ EDITMSG
 endfor
 envlist
 envpython
+excinfo
 getrecursionlimit
 ghnova
 glightbox

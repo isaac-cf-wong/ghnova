@@ -128,13 +128,11 @@ def list_command(  # noqa: PLR0913
         base_url: Base URL of the GitHub platform.
 
     """
-    import json  # noqa: PLC0415
-    import logging  # noqa: PLC0415
+    from typing import Any  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
-
-    logger = logging.getLogger("ghnova")
 
     token, base_url = get_auth_params(
         config_path=ctx.obj["config_path"],
@@ -143,9 +141,9 @@ def list_command(  # noqa: PLR0913
         base_url=base_url,
     )
 
-    try:
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            response_data, status_code, etag_value, last_modified_value = client.pull_request.list_pull_requests(
+            return client.pull_request.list_pull_requests(
                 owner=owner,
                 repository=repository,
                 state=state,
@@ -158,13 +156,5 @@ def list_command(  # noqa: PLR0913
                 etag=etag,
                 last_modified=last_modified,
             )
-            result = {
-                "data": response_data,
-                "status_code": status_code,
-                "etag": etag_value,
-                "last_modified": last_modified_value,
-            }
-            print(json.dumps(result, indent=2, default=str))
-    except Exception as e:
-        logger.exception("Error listing pull requests: %s", e)
-        raise typer.Exit(code=1) from e
+
+    execute_api_command(api_call=api_call, command_name="ghnova pull-request list")

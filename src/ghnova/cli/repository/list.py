@@ -145,10 +145,10 @@ def list_command(  # noqa: PLR0913
         base_url: Base URL of the GitHub platform.
 
     """
-    import json  # noqa: PLC0415
     import logging  # noqa: PLC0415
-    from typing import cast  # noqa: PLC0415
+    from typing import Any, cast  # noqa: PLC0415
 
+    from ghnova.cli.utils.api import execute_api_command  # noqa: PLC0415
     from ghnova.cli.utils.auth import get_auth_params  # noqa: PLC0415
     from ghnova.client.github import GitHub  # noqa: PLC0415
 
@@ -169,10 +169,9 @@ def list_command(  # noqa: PLR0913
             raise typer.Exit(code=1)
         affiliation_list = cast(list[Literal["owner", "collaborator", "organization_member"]], affiliation)
 
-    try:
+    def api_call() -> tuple[list[dict[str, Any]], dict[str, Any]]:
         with GitHub(token=token, base_url=base_url) as client:
-            repository_client = client.repository
-            data, status_code, etag_value, last_modified_value = repository_client.list_repositories(
+            return client.repository.list_repositories(
                 owner=owner,
                 organization=organization,
                 visibility=visibility,
@@ -187,15 +186,5 @@ def list_command(  # noqa: PLR0913
                 etag=etag,
                 last_modified=last_modified,
             )
-            result = {
-                "data": data,
-                "metadata": {
-                    "status_code": status_code,
-                    "etag": etag_value,
-                    "last_modified": last_modified_value,
-                },
-            }
-            print(json.dumps(result, indent=2, default=str))
-    except Exception as e:
-        logger.exception("Error listing repositories: %s", e)
-        raise typer.Exit(code=1) from e
+
+    execute_api_command(api_call=api_call, command_name="ghnova repository list")

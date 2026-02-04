@@ -26,7 +26,7 @@ def test_get_auth_params_with_account_name_and_token_base_url_warns(caplog):
         assert any("Both account name and token/base_url provided" in r.message for r in caplog.records)
 
 
-def test_get_auth_params_use_default_account(monkeypatch):
+def test_get_auth_params_use_default_account():
     """When neither token nor account_name provided, use default account from config."""
     with patch("ghnova.cli.utils.auth.ConfigManager") as mock_cm:
         mock_inst = mock_cm.return_value

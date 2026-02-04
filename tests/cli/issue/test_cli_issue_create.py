@@ -32,9 +32,7 @@ class TestCreateCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.create_issue.return_value = (
                 {"id": 1, "number": 1, "title": "New issue", "state": "open"},
-                201,
-                None,
-                None,
+                {"status_code": 201, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -72,9 +70,7 @@ class TestCreateCommand:
             mock_issue_client = mock_client.issue
             mock_issue_client.create_issue.return_value = (
                 {"id": 1, "number": 1, "title": "Bug", "body": "This is a bug", "state": "open"},
-                201,
-                None,
-                None,
+                {"status_code": 201, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -118,9 +114,7 @@ class TestCreateCommand:
                     "title": "Issue",
                     "labels": [{"name": "bug"}, {"name": "critical"}],
                 },
-                201,
-                None,
-                None,
+                {"status_code": 201, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(

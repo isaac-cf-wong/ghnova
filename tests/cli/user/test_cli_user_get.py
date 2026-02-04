@@ -37,9 +37,7 @@ class TestGetCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_user.return_value = (
                 {"login": "octocat", "id": 1, "name": "The Octocat"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -68,9 +66,7 @@ class TestGetCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_user.return_value = (
                 {"login": "octocat", "id": 1, "name": "The Octocat"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -105,9 +101,7 @@ class TestGetCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_user.return_value = (
                 {"login": "octocat", "id": 1, "name": "The Octocat"},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
@@ -142,9 +136,7 @@ class TestGetCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_user.return_value = (
                 {},
-                304,
-                "etag123",
-                None,
+                {"status_code": 304, "etag": "etag123", "last_modified": None},
             )
 
             result = runner.invoke(
@@ -179,9 +171,7 @@ class TestGetCommand:
             mock_user_client = mock_client.user
             mock_user_client.get_user.return_value = (
                 {"login": "octocat", "id": 1},
-                200,
-                None,
-                None,
+                {"status_code": 200, "etag": None, "last_modified": None},
             )
 
             result = runner.invoke(
